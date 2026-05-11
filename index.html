@@ -1458,17 +1458,18 @@
       el('kpi2Value').textContent  = countries;
       _setDelta('kpi2Delta', ctyDeltaPct);
 
-      // 3 — ETOP (Pipe in the Room)
+      // 3 — PiPR (Pipe in the Room: ETOP + Registered ETOP + MDP + MMA)
       const totalEtop   = evts.reduce((s, e) => s + (e.etop || 0), 0);
-      const etopPct     = Math.min(Math.round(totalEtop / FY26.etop * 100), 100);
-      const etopDeltaPct = Math.round((totalEtop - FY26.etop) / FY26.etop * 100);
-      const etopLabel   = totalEtop >= 1e9 ? '$' + (totalEtop/1e9).toFixed(1) + 'B'
-                        : totalEtop >= 1e6 ? '$' + (totalEtop/1e6).toFixed(0) + 'M' : '—';
+      const totalPipr   = evts.reduce((s,e)=>s+(e.etop||0)+(e.regEtop||0)+(e.mdp||0)+(e.mma||0),0);
+      const piprPct     = Math.min(Math.round(totalPipr / (FY26.etop * 3) * 100), 100); // Adjust baseline for bigger numbers
+      const piprDeltaPct = Math.round((totalPipr - FY26.etop) / FY26.etop * 100);
+      const piprLabel   = totalPipr >= 1e9 ? '$' + (totalPipr/1e9).toFixed(1) + 'B'
+                        : totalPipr >= 1e6 ? '$' + (totalPipr/1e6).toFixed(0) + 'M' : '—';
       destroyChart('donut3');
-      chartRegistry['donut3'] = makeDonut('donut3', etopPct, '#ec4899', 'rgba(236,72,153,0.07)');
-      el('kpi3Center').textContent = etopPct + '%';
-      el('kpi3Value').textContent  = etopLabel;
-      _setDelta('kpi3Delta', etopDeltaPct);
+      chartRegistry['donut3'] = makeDonut('donut3', piprPct, '#ec4899', 'rgba(236,72,153,0.07)');
+      el('kpi3Center').textContent = piprPct + '%';
+      el('kpi3Value').textContent  = piprLabel;
+      _setDelta('kpi3Delta', piprDeltaPct);
 
       // 4 — Attendees
       const totalAtt    = evts.reduce((s, e) => s + (e.attendance || 0), 0);
