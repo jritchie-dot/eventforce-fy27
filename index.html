@@ -1059,6 +1059,9 @@
           <button class="export-option" onclick="exportPrint(event)">
             <span class="opt-icon">🖨️</span> Print / Save PDF
           </button>
+          <button class="export-option" onclick="publishSnapshot(event)" style="border-top:1px solid rgba(124,92,191,0.3);margin-top:4px;padding-top:8px;">
+            <span class="opt-icon">🚀</span> Publish to GitHub
+          </button>
         </div>
       </button>
     </div>
@@ -2997,6 +3000,24 @@
       e.stopPropagation();
       document.getElementById('exportBtn').classList.remove('open');
       window.print();
+    }
+
+    /* ── Publish Snapshot to GitHub ── */
+    function publishSnapshot(e) {
+      e.stopPropagation();
+      document.getElementById('exportBtn').classList.remove('open');
+
+      // Serialize current dashboard state
+      const timestamp = new Date().toISOString();
+      const blob = new Blob([document.documentElement.outerHTML], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'index.html';
+      link.click();
+      URL.revokeObjectURL(url);
+
+      alert('✅ Dashboard exported as index.html\n\nNext steps:\n1. Replace index.html in your repo\n2. Commit and push to GitHub\n3. Wait 1-2 minutes for deployment\n\nYour dashboard will be live at:\nhttps://jritchie-dot.github.io/eventforce-fy27/');
     }
 
     /* ══════════════════════════════════════════
