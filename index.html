@@ -1875,6 +1875,8 @@
     function fmtM(v) {
       if (v == null) return '<span class="muted">—</span>';
       if (v === 0)   return '<span class="muted">$0</span>';
+      // Show in billions if >= 1B, otherwise millions
+      if (v >= 1e9) return '$' + (v / 1e9).toFixed(2) + 'B';
       return '$' + (v / 1e6).toFixed(2) + 'M';
     }
 
