@@ -982,11 +982,228 @@
     @keyframes spin { to { transform: rotate(360deg); } }
     .export-overlay-text { font-size: 0.8rem; color: var(--text-muted); letter-spacing: 0.05em; }
 
-    /* Print styles */
+    /* ═══ Presentation Mode Button ═══ */
+    .presentation-mode-btn {
+      background: rgba(167,139,250,0.1);
+      border: 1px solid rgba(167,139,250,0.3);
+      color: var(--bright);
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .presentation-mode-btn:hover {
+      background: rgba(167,139,250,0.2);
+      border-color: var(--bright);
+      transform: translateY(-1px);
+    }
+
+    /* ═══ Executive Summary ═══ */
+    .executive-summary {
+      background: linear-gradient(135deg, rgba(124,92,191,0.05) 0%, rgba(20,184,166,0.05) 100%);
+      border: 1px solid rgba(167,139,250,0.2);
+      border-radius: 16px;
+      padding: 32px;
+      margin: 0 0 32px 0;
+      backdrop-filter: blur(10px);
+      animation: slideInDown 0.6s ease-out;
+    }
+    @keyframes slideInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .exec-summary-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .exec-summary-header h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin: 0 0 8px 0;
+      background: linear-gradient(135deg, var(--bright), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .exec-summary-header p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin: 0;
+    }
+
+    .exec-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .exec-insight {
+      background: var(--card-bg);
+      border: 1px solid rgba(167,139,250,0.2);
+      border-radius: 12px;
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: all 0.3s ease;
+      animation: fadeInScale 0.5s ease-out backwards;
+    }
+    .exec-insight:nth-child(1) { animation-delay: 0.1s; }
+    .exec-insight:nth-child(2) { animation-delay: 0.2s; }
+    .exec-insight:nth-child(3) { animation-delay: 0.3s; }
+    .exec-insight:nth-child(4) { animation-delay: 0.4s; }
+
+    @keyframes fadeInScale {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .exec-insight:hover {
+      transform: translateY(-4px);
+      border-color: var(--bright);
+      box-shadow: 0 8px 24px rgba(124,92,191,0.2);
+    }
+
+    .highlight-primary { border-left: 4px solid var(--bright); }
+    .highlight-success { border-left: 4px solid var(--success); }
+    .highlight-info { border-left: 4px solid var(--secondary); }
+    .highlight-secure { border-left: 4px solid var(--accent-orange); }
+
+    .insight-icon {
+      font-size: 2.5rem;
+      line-height: 1;
+      opacity: 0.9;
+    }
+
+    .insight-content {
+      flex: 1;
+    }
+
+    .insight-number {
+      font-size: 2.2rem;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 4px;
+      background: linear-gradient(135deg, var(--text-bright), var(--bright));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .insight-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-bright);
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .insight-detail {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .exec-summary-highlights {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding: 20px;
+      background: rgba(124,92,191,0.05);
+      border-radius: 10px;
+      border: 1px solid rgba(167,139,250,0.15);
+    }
+
+    .highlight-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .highlight-badge {
+      background: linear-gradient(135deg, var(--primary), var(--bright));
+      color: white;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
+
+    .highlight-text {
+      font-size: 0.85rem;
+      color: var(--text-bright);
+      line-height: 1.4;
+    }
+
+    /* ═══ Presentation Mode ═══ */
+    body.presentation-mode .topbar,
+    body.presentation-mode .gq-bar,
+    body.presentation-mode .search-row,
+    body.presentation-mode .footer {
+      display: none !important;
+    }
+
+    body.presentation-mode .page {
+      padding: 20px !important;
+    }
+
+    body.presentation-mode .executive-summary {
+      margin-top: 0;
+    }
+
+    /* ═══ Enhanced Print Styles ═══ */
     @media print {
-      .topbar, .gq-bar, .search-row, .export-btn, .export-overlay { display: none !important; }
-      body { background: #fff !important; color: #000 !important; }
-      .page { padding: 0 !important; }
+      .topbar, .gq-bar, .search-row, .export-btn, .export-overlay, .presentation-mode-btn {
+        display: none !important;
+      }
+      body {
+        background: #fff !important;
+        color: #000 !important;
+      }
+      .page {
+        padding: 0 !important;
+      }
+      .executive-summary {
+        background: #f8f9fa !important;
+        border: 2px solid #7c5cbf !important;
+        page-break-after: avoid;
+      }
+      .exec-insight {
+        background: white !important;
+        border: 1px solid #ddd !important;
+        page-break-inside: avoid;
+      }
+      .insight-number, .insight-label, .insight-detail {
+        color: #000 !important;
+        -webkit-text-fill-color: #000 !important;
+      }
+      .kpi-card {
+        page-break-inside: avoid;
+      }
+    }
+
+    /* ═══ Responsive Improvements ═══ */
+    @media (max-width: 768px) {
+      .exec-summary-grid {
+        grid-template-columns: 1fr;
+      }
+      .executive-summary {
+        padding: 20px;
+      }
+      .exec-summary-highlights {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
@@ -1088,6 +1305,65 @@
       <span class="as-of">As of May 24, 2026</span>
       <span class="fy-badge">FY 2027</span>
       <span class="last-updated" id="lastUpdated" title="Last edited in this session"></span>
+      <button class="presentation-mode-btn" onclick="togglePresentationMode()" title="Presentation Mode (Press P)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Executive Summary Section -->
+  <div class="executive-summary" id="executiveSummary">
+    <div class="exec-summary-header">
+      <h2>Executive Summary</h2>
+      <p>FY27 Global Event Security & Pipeline Performance</p>
+    </div>
+    <div class="exec-summary-grid">
+      <div class="exec-insight highlight-primary">
+        <div class="insight-icon">🌍</div>
+        <div class="insight-content">
+          <div class="insight-number">26</div>
+          <div class="insight-label">Countries</div>
+          <div class="insight-detail">Global event coverage across all major markets</div>
+        </div>
+      </div>
+      <div class="exec-insight highlight-success">
+        <div class="insight-icon">💰</div>
+        <div class="insight-content">
+          <div class="insight-number">$5.8B</div>
+          <div class="insight-label">Pipeline in the Room</div>
+          <div class="insight-detail">ETOP + Registered + MDP + MMA across all events</div>
+        </div>
+      </div>
+      <div class="exec-insight highlight-info">
+        <div class="insight-icon">🎯</div>
+        <div class="insight-content">
+          <div class="insight-number">3</div>
+          <div class="insight-label">Billion-Dollar Events</div>
+          <div class="insight-detail">NYC ($1.1B), Tableau ($1.1B), TDX ($1.1B)</div>
+        </div>
+      </div>
+      <div class="exec-insight highlight-secure">
+        <div class="insight-icon">🛡️</div>
+        <div class="insight-content">
+          <div class="insight-number">2,762</div>
+          <div class="insight-label">Guard Shifts</div>
+          <div class="insight-detail">Comprehensive security coverage across FY27</div>
+        </div>
+      </div>
+    </div>
+    <div class="exec-summary-highlights">
+      <div class="highlight-item">
+        <span class="highlight-badge">Scale</span>
+        <span class="highlight-text">55 events supporting 55K+ attendees globally</span>
+      </div>
+      <div class="highlight-item">
+        <span class="highlight-badge">Impact</span>
+        <span class="highlight-text">Top 3 events represent $3.3B (57%) of total pipeline</span>
+      </div>
+      <div class="highlight-item">
+        <span class="highlight-badge">Security</span>
+        <span class="highlight-text">$1.4M security budget with K9, medical, and contractor support</span>
+      </div>
     </div>
   </div>
 
@@ -3162,6 +3438,31 @@
 
       alert('✅ Dashboard exported as index.html\n\nNext steps:\n1. Replace index.html in your repo\n2. Commit and push to GitHub\n3. Wait 1-2 minutes for deployment\n\nYour dashboard will be live at:\nhttps://jritchie-dot.github.io/eventforce-fy27/');
     }
+
+    /* ── Presentation Mode ── */
+    let presentationMode = false;
+    function togglePresentationMode() {
+      presentationMode = !presentationMode;
+      document.body.classList.toggle('presentation-mode', presentationMode);
+
+      // Scroll to top smoothly
+      if (presentationMode) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    // Keyboard shortcut: Press 'P' for presentation mode
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'p' || e.key === 'P') {
+        if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+          togglePresentationMode();
+        }
+      }
+      // Press 'Escape' to exit presentation mode
+      if (e.key === 'Escape' && presentationMode) {
+        togglePresentationMode();
+      }
+    });
 
     /* ══════════════════════════════════════════
        1. KPI ANIMATED COUNTER
