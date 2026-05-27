@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Firebase Connection Test</title>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    h1 {
+      color: #667eea;
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+    .test-item {
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 15px 0;
+    }
+    .test-item h3 {
+      color: #1e293b;
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+    .status {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    .status.pending { background: #fef3c7; color: #92400e; }
+    .status.success { background: #f0fdf4; color: #166534; }
+    .status.error { background: #fef2f2; color: #991b1b; }
+    .result {
+      margin-top: 10px;
+      padding: 10px;
+      background: #1e293b;
+      color: #e2e8f0;
+      border-radius: 8px;
+      font-family: 'Monaco', monospace;
+      font-size: 0.85rem;
+      overflow-x: auto;
+    }
+    button {
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 24px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: all 0.2s;
+    }
+    button:hover {
+      background: #5568d3;
+      transform: translateY(-2px);
+    }
+    button:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>🔍 Firebase Connection Test</h1>
+  <p style="color: #64748b; margin-bottom: 30px;">
+    Verify your Firebase setup before using the dashboard
+  </p>
+
+  <div class="test-item">
+    <h3>1. Firebase Initialization</h3>
+    <span class="status" id="status1">⏳ Pending</span>
+    <div class="result" id="result1" style="display:none;"></div>
+  </div>
+
+  <div class="test-item">
+    <h3>2. Firestore Connection</h3>
+    <span class="status" id="status2">⏳ Pending</span>
+    <div class="result" id="result2" style="display:none;"></div>
+  </div>
+
+  <div class="test-item">
+    <h3>3. Authentication (Optional)</h3>
+    <span class="status" id="status3">⏳ Pending</span>
+    <div class="result" id="result3" style="display:none;"></div>
+    <button onclick="testAuth()" id="authBtn">Test Google Sign-In</button>
+  </div>
+
+  <div class="test-item">
+    <h3>4. Events Collection</h3>
+    <span class="status" id="status4">⏳ Pending</span>
+    <div class="result" id="result4" style="display:none;"></div>
+  </div>
+</div>
+
+<script>
+  // ═══════════════════════════════════════════════════════════
+  // FIREBASE CONFIGURATION
+  // TODO: Replace with your Firebase project config
+  // ═══════════════════════════════════════════════════════════
+
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  };
+
+  // ═══════════════════════════════════════════════════════════
+
+  function setStatus(num, status, message) {
+    const statusEl = document.getElementById(`status${num}`);
+    const resultEl = document.getElementById(`result${num}`);
+
+    if (status === 'success') {
+      statusEl.className = 'status success';
+      statusEl.textContent = '✅ Success';
+    } else if (status === 'error') {
+      statusEl.className = 'status error';
+      statusEl.textContent = '❌ Error';
+    }
+
+    if (message) {
+      resultEl.style.display = 'block';
+      resultEl.textContent = message;
+    }
+  }
+
+  // Test 1: Initialize Firebase
+  try {
+    if (firebaseConfig.apiKey.includes('YOUR_')) {
+      setStatus(1, 'error', 'Please update firebaseConfig in this file with your values!');
+    } else {
+      firebase.initializeApp(firebaseConfig);
+      setStatus(1, 'success', `Project ID: ${firebaseConfig.projectId}\nAuth Domain: ${firebaseConfig.authDomain}`);
+
+      // Test 2: Firestore Connection
+      const db = firebase.firestore();
+      db.app.automaticDataCollectionEnabled = true;
+      setStatus(2, 'success', 'Firestore initialized successfully');
+
+      // Test 3: Auth Status
+      const auth = firebase.auth();
+      auth.onAuthStateChanged(user => {
+        if (user) {
+          setStatus(3, 'success', `Signed in as: ${user.email}\nUID: ${user.uid}`);
+          document.getElementById('authBtn').textContent = 'Sign Out';
+          document.getElementById('authBtn').onclick = () => auth.signOut();
+        } else {
+          setStatus(3, 'pending', 'Not signed in. Click button to test.');
+        }
+      });
+
+      // Test 4: Check Events Collection
+      db.collection('events').limit(1).get()
+        .then(snapshot => {
+          if (snapshot.empty) {
+            setStatus(4, 'error', 'Events collection is empty!\n\nYou need to run migrate-to-firestore.html to upload your events.');
+          } else {
+            const eventCount = snapshot.size;
+            const sampleEvent = snapshot.docs[0].data();
+            setStatus(4, 'success', `Found events in Firestore!\n\nSample event: ${sampleEvent.name}\nOwner: ${sampleEvent.owner}\n\nRun a full query to count all events...`);
+
+            // Count all events
+            db.collection('events').get().then(allSnapshot => {
+              setStatus(4, 'success', `✅ Found ${allSnapshot.size} events in Firestore!\n\nSample event: ${sampleEvent.name}\nOwner: ${sampleEvent.owner}\nCountry: ${sampleEvent.country}`);
+            });
+          }
+        })
+        .catch(error => {
+          setStatus(4, 'error', `Failed to read events:\n${error.code}: ${error.message}\n\nCheck Firestore security rules!`);
+        });
+    }
+  } catch (error) {
+    setStatus(1, 'error', `Failed to initialize:\n${error.message}`);
+  }
+
+  function testAuth() {
+    const auth = firebase.auth();
+    if (auth.currentUser) {
+      auth.signOut();
+    } else {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      auth.signInWithPopup(provider).catch(err => {
+        setStatus(3, 'error', `Sign-in failed:\n${err.code}: ${err.message}`);
+      });
+    }
+  }
+</script>
+
+</body>
+</html>
