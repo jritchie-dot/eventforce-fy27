@@ -1,0 +1,36 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ═══════════════════════════════════════════════════════════
+    // EventForce FY27 Security Rules
+    // ═══════════════════════════════════════════════════════════
+
+    // Events Collection
+    match /events/{eventId} {
+
+      // READ: Only authenticated @salesforce.com users can view events
+      allow read: if request.auth != null
+                  && request.auth.token.email.matches('.*@salesforce.com');
+
+      // CREATE: Only authenticated @salesforce.com users can create events
+      allow create: if request.auth != null
+                    && request.auth.token.email.matches('.*@salesforce.com');
+
+      // UPDATE: Only authenticated @salesforce.com users can edit events
+      allow update: if request.auth != null
+                    && request.auth.token.email.matches('.*@salesforce.com');
+
+      // DELETE: Only authenticated @salesforce.com users can delete events
+      // (Optional: You can restrict this further if needed)
+      allow delete: if request.auth != null
+                    && request.auth.token.email.matches('.*@salesforce.com');
+    }
+
+    // Deny all other access by default
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

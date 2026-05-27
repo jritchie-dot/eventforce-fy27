@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EventForce Migration to Firestore</title>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      background: white;
+      border-radius: 20px;
+      padding: 50px;
+      max-width: 700px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    h1 {
+      color: #667eea;
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: #64748b;
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+    }
+
+    .warning {
+      background: #fef3c7;
+      border: 2px solid #fbbf24;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 30px;
+      color: #92400e;
+    }
+
+    .warning h3 {
+      color: #92400e;
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+    }
+
+    .warning ul {
+      margin-left: 20px;
+      line-height: 1.8;
+    }
+
+    .config-section {
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 30px;
+    }
+
+    .config-section h3 {
+      color: #1e293b;
+      margin-bottom: 15px;
+      font-size: 1rem;
+    }
+
+    .config-status {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .config-status.pending {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .config-status.ready {
+      background: #f0fdf4;
+      color: #166534;
+    }
+
+    .btn {
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 16px 32px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.2s;
+      margin-bottom: 20px;
+    }
+
+    .btn:hover:not(:disabled) {
+      background: #5568d3;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+    }
+
+    .progress {
+      margin-top: 30px;
+      display: none;
+    }
+
+    .progress.show {
+      display: block;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 40px;
+      background: #e2e8f0;
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 15px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+      width: 0%;
+      transition: width 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .progress-text {
+      color: #64748b;
+      text-align: center;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .log {
+      background: #1e293b;
+      color: #e2e8f0;
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 20px;
+      font-family: 'Monaco', 'Courier New', monospace;
+      font-size: 0.85rem;
+      max-height: 300px;
+      overflow-y: auto;
+      display: none;
+    }
+
+    .log.show {
+      display: block;
+    }
+
+    .log-entry {
+      margin-bottom: 8px;
+    }
+
+    .log-entry.success { color: #10b981; }
+    .log-entry.error { color: #ef4444; }
+    .log-entry.info { color: #3b82f6; }
+
+    .success-message {
+      background: #f0fdf4;
+      border: 2px solid #10b981;
+      border-radius: 12px;
+      padding: 30px;
+      text-align: center;
+      display: none;
+    }
+
+    .success-message.show {
+      display: block;
+    }
+
+    .success-message h2 {
+      color: #166534;
+      font-size: 2rem;
+      margin-bottom: 15px;
+    }
+
+    .success-message p {
+      color: #166534;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    .success-icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>🚀 EventForce Migration</h1>
+  <p class="subtitle">Upload your event data to Firestore</p>
+
+  <div class="warning">
+    <h3>⚠️ Before You Start:</h3>
+    <ul>
+      <li>Ensure you've created a Firebase project</li>
+      <li>Enabled Firestore Database in production mode</li>
+      <li>Updated the Firebase config below with YOUR values</li>
+      <li>This script uploads <strong>ALL_EVENTS_BACKUP</strong> from index.html</li>
+      <li>Run this only ONCE after Firebase setup</li>
+    </ul>
+  </div>
+
+  <div class="config-section">
+    <h3>Firebase Configuration Status</h3>
+    <div class="config-status pending" id="configStatus">
+      ⏳ Waiting for configuration...
+    </div>
+  </div>
+
+  <button class="btn" id="uploadBtn" onclick="startMigration()" disabled>
+    Upload Events to Firestore
+  </button>
+
+  <div class="progress" id="progress">
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill">0%</div>
+    </div>
+    <div class="progress-text" id="progressText">
+      Preparing...
+    </div>
+  </div>
+
+  <div class="log" id="log"></div>
+
+  <div class="success-message" id="successMessage">
+    <div class="success-icon">✅</div>
+    <h2>Migration Complete!</h2>
+    <p>
+      All events have been uploaded to Firestore.<br>
+      You can now close this page and open your dashboard.<br>
+      Future edits will sync automatically across all users!
+    </p>
+  </div>
+</div>
+
+<script>
+  // ═══════════════════════════════════════════════════════════
+  // FIREBASE CONFIGURATION
+  // TODO: Replace with your Firebase project config
+  // ═══════════════════════════════════════════════════════════
+
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  };
+
+  // Check if config is updated
+  const isConfigured = !firebaseConfig.apiKey.includes('YOUR_');
+
+  if (isConfigured) {
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    document.getElementById('configStatus').className = 'config-status ready';
+    document.getElementById('configStatus').innerHTML = '✅ Firebase configured and ready';
+    document.getElementById('uploadBtn').disabled = false;
+  } else {
+    document.getElementById('configStatus').innerHTML = '❌ Please update Firebase config in this file';
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // EVENT DATA (Copy from index.html ALL_EVENTS_BACKUP)
+  // ═══════════════════════════════════════════════════════════
+
+  const EVENTS_TO_UPLOAD = [
+    // TODO: Copy ALL_EVENTS_BACKUP array from index.html here
+    // Example:
+    // { name:'World Tour Madrid (1) FY27', owner:'Chris Moore', country:'Spain', ... },
+    // { name:'Peak Performers JAPAC', owner:'Chris Moore', country:'Indonesia', ... },
+    // ...
+  ];
+
+  // ═══════════════════════════════════════════════════════════
+  // MIGRATION LOGIC
+  // ═══════════════════════════════════════════════════════════
+
+  function log(message, type = 'info') {
+    const logDiv = document.getElementById('log');
+    logDiv.classList.add('show');
+
+    const entry = document.createElement('div');
+    entry.className = `log-entry ${type}`;
+
+    const timestamp = new Date().toLocaleTimeString();
+    entry.textContent = `[${timestamp}] ${message}`;
+
+    logDiv.appendChild(entry);
+    logDiv.scrollTop = logDiv.scrollHeight;
+  }
+
+  function updateProgress(current, total) {
+    const percent = Math.round((current / total) * 100);
+    document.getElementById('progressFill').style.width = percent + '%';
+    document.getElementById('progressFill').textContent = percent + '%';
+    document.getElementById('progressText').innerHTML = `
+      Uploaded ${current} of ${total} events<br>
+      <small>Please wait, do not close this page...</small>
+    `;
+  }
+
+  async function startMigration() {
+    if (EVENTS_TO_UPLOAD.length === 0) {
+      alert('❌ No events found!\n\nPlease copy the ALL_EVENTS_BACKUP array from index.html into this file (line 217).');
+      return;
+    }
+
+    const confirmed = confirm(
+      `Ready to upload ${EVENTS_TO_UPLOAD.length} events to Firestore?\n\n` +
+      `This will:\n` +
+      `• Create a new document for each event\n` +
+      `• Auto-generate unique IDs\n` +
+      `• Take approximately ${Math.ceil(EVENTS_TO_UPLOAD.length / 2)} seconds\n\n` +
+      `Continue?`
+    );
+
+    if (!confirmed) return;
+
+    // Disable button
+    const btn = document.getElementById('uploadBtn');
+    btn.disabled = true;
+    btn.textContent = 'Uploading...';
+
+    // Show progress
+    document.getElementById('progress').classList.add('show');
+
+    log('🚀 Starting migration...', 'info');
+    log(`📊 Total events to upload: ${EVENTS_TO_UPLOAD.length}`, 'info');
+
+    let uploaded = 0;
+    let failed = 0;
+
+    // Upload each event
+    for (let i = 0; i < EVENTS_TO_UPLOAD.length; i++) {
+      const event = EVENTS_TO_UPLOAD[i];
+
+      try {
+        // Add to Firestore (auto-generates ID)
+        await db.collection('events').add(event);
+
+        uploaded++;
+        updateProgress(uploaded, EVENTS_TO_UPLOAD.length);
+        log(`✅ Uploaded: ${event.name}`, 'success');
+
+      } catch (error) {
+        failed++;
+        log(`❌ Failed: ${event.name} - ${error.message}`, 'error');
+      }
+
+      // Small delay to avoid overwhelming Firestore
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
+
+    // Show results
+    log('', 'info');
+    log(`✅ Migration complete!`, 'success');
+    log(`📊 Uploaded: ${uploaded} events`, 'success');
+    if (failed > 0) {
+      log(`⚠️  Failed: ${failed} events`, 'error');
+    }
+
+    // Show success message
+    document.getElementById('successMessage').classList.add('show');
+    document.getElementById('progress').style.display = 'none';
+  }
+</script>
+
+</body>
+</html>

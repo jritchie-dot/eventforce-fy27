@@ -1205,9 +1205,135 @@
         flex-direction: column;
       }
     }
+    /* ═══ Login Screen ═══ */
+    #loginScreen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg);
+      background-image:
+        radial-gradient(ellipse at 15% 0%,   rgba(124,92,191,0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 85% 100%, rgba(20,184,166,0.08)  0%, transparent 50%);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.3s ease;
+    }
+    #loginScreen.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .login-card {
+      background: var(--card);
+      border: 1px solid var(--border-bright);
+      border-radius: 20px;
+      padding: 50px 60px;
+      text-align: center;
+      max-width: 480px;
+      width: 90%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+    .login-logo {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+    .login-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--purple-bright);
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+    .login-subtitle {
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-bottom: 40px;
+    }
+    .google-signin-btn {
+      background: white;
+      color: #333;
+      border: none;
+      border-radius: 12px;
+      padding: 16px 32px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .google-signin-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+    .google-signin-btn:active {
+      transform: translateY(0);
+    }
+    .google-icon {
+      width: 24px;
+      height: 24px;
+    }
+    .login-spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid var(--purple-dim);
+      border-top-color: var(--purple-bright);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 20px auto;
+    }
+    .login-error {
+      background: rgba(239,68,68,0.15);
+      border: 1px solid rgba(239,68,68,0.4);
+      border-radius: 10px;
+      padding: 12px 20px;
+      color: #ff6b6b;
+      margin-top: 20px;
+      display: none;
+    }
+    .login-error.show {
+      display: block;
+    }
+    .login-status {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-top: 20px;
+    }
+
   </style>
 </head>
 <body>
+
+  <!-- Login Screen -->
+  <div id="loginScreen">
+    <div class="login-card">
+      <div class="login-logo">🔐</div>
+      <h1 class="login-title">EventForce FY27</h1>
+      <p class="login-subtitle">Collaborative Event Management Dashboard</p>
+
+      <button class="google-signin-btn" id="googleSignInBtn" onclick="signInWithGoogle()">
+        <svg class="google-icon" viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+        </svg>
+        Sign in with Google
+      </button>
+
+      <div class="login-spinner" id="loginSpinner" style="display:none;"></div>
+      <div class="login-status" id="loginStatus">Checking authentication...</div>
+      <div class="login-error" id="loginError"></div>
+    </div>
+  </div>
+
+  <!-- Main Dashboard (hidden until authenticated) -->
+  <div id="mainDashboard" style="display:none;">
 
   <!-- Rich chart tooltip -->
   <div id="chartTooltip"><div class="ctt-inner" id="chartTooltipInner"></div></div>
@@ -1720,6 +1846,125 @@
   </div><!-- end .page -->
 
   <script>
+    /* ═══════════════════════════════════════════════════════════
+       FIREBASE INITIALIZATION & AUTHENTICATION
+    ═══════════════════════════════════════════════════════════ */
+
+    // Firebase Configuration
+    // TODO: Replace these values with your Firebase project config
+    // Get from: Firebase Console → Project Settings → Your apps → Config
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // UI Elements
+    const loginScreen = document.getElementById('loginScreen');
+    const mainDashboard = document.getElementById('mainDashboard');
+    const loginStatus = document.getElementById('loginStatus');
+    const loginError = document.getElementById('loginError');
+    const loginSpinner = document.getElementById('loginSpinner');
+    const googleSignInBtn = document.getElementById('googleSignInBtn');
+
+    // Auth State Management
+    let currentUser = null;
+    let isInitializing = true;
+
+    // Google Sign-In
+    function signInWithGoogle() {
+      loginStatus.textContent = 'Signing in...';
+      loginSpinner.style.display = 'block';
+      googleSignInBtn.style.display = 'none';
+      loginError.classList.remove('show');
+
+      const provider = new firebase.auth.GoogleAuthProvider();
+      auth.signInWithPopup(provider).catch(err => {
+        console.error('Sign-in error:', err);
+        showError(err.message);
+        loginSpinner.style.display = 'none';
+        googleSignInBtn.style.display = 'inline-flex';
+        loginStatus.textContent = '';
+      });
+    }
+
+    // Show error message
+    function showError(message) {
+      loginError.textContent = message;
+      loginError.classList.add('show');
+    }
+
+    // Hide login screen, show dashboard
+    function hideLoginScreen() {
+      loginScreen.classList.add('hidden');
+      mainDashboard.style.display = 'block';
+      setTimeout(() => {
+        loginScreen.style.display = 'none';
+      }, 300);
+    }
+
+    // Show login screen, hide dashboard
+    function showLoginScreen() {
+      loginScreen.style.display = 'flex';
+      loginScreen.classList.remove('hidden');
+      mainDashboard.style.display = 'none';
+      loginSpinner.style.display = 'none';
+      googleSignInBtn.style.display = 'inline-flex';
+      loginStatus.textContent = '';
+    }
+
+    // Auth state listener
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        // Check Salesforce domain restriction
+        if (!user.email.endsWith('@salesforce.com')) {
+          showError('Access restricted to @salesforce.com emails only.');
+          auth.signOut();
+          return;
+        }
+
+        currentUser = user;
+        console.log('✅ Authenticated:', user.email);
+
+        // Hide login, show dashboard
+        hideLoginScreen();
+
+        // Initialize dashboard (only on first auth)
+        if (isInitializing) {
+          isInitializing = false;
+          initializeDashboard();
+        }
+
+      } else {
+        currentUser = null;
+        isInitializing = true;
+        console.log('❌ Not authenticated');
+        showLoginScreen();
+      }
+    });
+
+    /* ═══════════════════════════════════════════════════════════
+       DASHBOARD INITIALIZATION
+    ═══════════════════════════════════════════════════════════ */
+
+    function initializeDashboard() {
+      console.log('🚀 Initializing dashboard...');
+
+      // Setup Firestore real-time listener
+      setupFirestoreListener();
+
+      // Note: The initial dashboard render will happen automatically
+      // when Firestore listener receives data for the first time
+    }
+
     /* ── Chart defaults ── */
     Chart.defaults.color = '#9490b8';
     Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
@@ -1975,7 +2220,15 @@
       return `<span style="display:inline-block;padding:1px 7px;border-radius:4px;font-size:0.68rem;font-weight:700;background:${c}22;color:${c};border:1px solid ${c}44;">${q}</span>`;
     }
 
-    const ALL_EVENTS = [
+    /* ═══════════════════════════════════════════════════════════
+       EVENT DATA - FIRESTORE REAL-TIME SYNC
+    ═══════════════════════════════════════════════════════════ */
+
+    // ALL_EVENTS will be populated by Firestore real-time listener
+    let ALL_EVENTS = [];
+
+    // Backup: Original static data (for reference or migration)
+    const ALL_EVENTS_BACKUP = [
       // ── Chris Moore ──
       { name:'World Tour Madrid (1) FY27'                      , owner:'Chris Moore'            , country:'Spain'                , city:'Madrid'               , venue:'IFEMA Madrid'                     , type:'External'             , date:'4/16/2026'  , status:'Canceled'  , attendance:2701   , budget:1000000   , medCost:22914   , secBudget:17051    , etop:6690000     , regEtop:829000000   , mdp:1500000   , mma:0       , guards:29   , k9:2   , medOnsite:2    , teamOnsite:1    , loadDays:4    , showDays:1   , contractorHrs:359 },
       { name:'Peak Performers JAPAC'                           , owner:'Chris Moore'            , country:'Indonesia'            , city:'Bali'                 , venue:'Conrad Hilton Bali'               , type:'Internal'             , date:'5/10/2026'  , status:'Pending'   , attendance:null   , budget:null      , medCost:null    , secBudget:null     , etop:0           , regEtop:null        , mdp:null      , mma:null    , guards:null , k9:0   , medOnsite:2    , teamOnsite:3    , loadDays:3    , showDays:4   , contractorHrs:null },
@@ -2042,6 +2295,96 @@
       { name:'World Tour NYC FY27'                             , owner:'Tuli Mateialona'        , country:'United States'        , city:'New York'             , venue:'Javits'                           , type:'External'             , date:'4/29/2026'  , status:'Complete'  , attendance:7676   , budget:null      , medCost:12435.25, secBudget:202249.15, etop:220000000   , regEtop:885000000   , mdp:null      , mma:null    , guards:238  , k9:2   , medOnsite:3    , teamOnsite:6    , loadDays:6    , showDays:1   , contractorHrs:2871 },
       { name:'World Tour Boston FY27'                          , owner:'Tuli Mateialona'        , country:'United States'        , city:'Boston'               , venue:'Boston Convention Center'         , type:'External'             , date:'6/24/2026'  , status:'Assigned'  , attendance:null   , budget:null      , medCost:null    , secBudget:null     , etop:null        , regEtop:null        , mdp:null      , mma:null    , guards:null , k9:null, medOnsite:null , teamOnsite:null , loadDays:null , showDays:null, contractorHrs:null },
     ];
+
+    /* ═══════════════════════════════════════════════════════════
+       FIRESTORE REAL-TIME LISTENER
+    ═══════════════════════════════════════════════════════════ */
+
+    let firestoreUnsubscribe = null;
+    let isFirstLoad = true;
+
+    // Setup Firestore real-time listener
+    function setupFirestoreListener() {
+      console.log('📡 Setting up Firestore listener...');
+
+      firestoreUnsubscribe = db.collection('events').onSnapshot(snapshot => {
+        console.log(`🔄 Firestore update: ${snapshot.docs.length} events`);
+
+        // Map Firestore documents to event objects
+        ALL_EVENTS = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+
+        // Sort by date (ascending)
+        ALL_EVENTS.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+        // Rebuild dashboard
+        if (isFirstLoad) {
+          isFirstLoad = false;
+          console.log('🎨 Initial dashboard render');
+          // Initial render happens via existing init code
+        } else {
+          console.log('♻️  Rebuilding dashboard with updated data');
+          rebuildDashboard();
+        }
+
+      }, error => {
+        console.error('❌ Firestore sync error:', error);
+        showError('Connection lost. Reconnecting...');
+      });
+    }
+
+    // Rebuild entire dashboard (called when Firestore data changes)
+    function rebuildDashboard() {
+      try {
+        // Rebuild KPIs
+        _coreRebuildKPIs(ALL_EVENTS);
+
+        // Rebuild all charts
+        rebuildYoYChart();
+        rebuildAttendanceChart();
+        rebuildStatusDonut();
+        rebuildEtopQtrChart();
+        rebuildEtopByOwnerChart();
+        rebuildSecByTypeChart();
+        rebuildAttByTypeCharts(ALL_EVENTS);
+        rebuildRegionalDonut();
+        rebuildLeadChart();
+        rebuildCoLeadChart();
+        rebuildRadarChart();
+
+        // Rebuild table, upcoming strip, gantt
+        buildTable(_qGlobal, _qSearch);
+        buildUpcomingStrip(ALL_EVENTS);
+        buildGantt(ALL_EVENTS);
+
+        // Update last modified timestamp
+        updateLastModified();
+
+        console.log('✅ Dashboard rebuilt successfully');
+      } catch (error) {
+        console.error('Error rebuilding dashboard:', error);
+      }
+    }
+
+    // Update last modified timestamp
+    function updateLastModified() {
+      const timestampEl = document.querySelector('.topbar-meta');
+      if (timestampEl) {
+        const now = new Date();
+        const formatted = now.toLocaleString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: true
+        });
+        timestampEl.textContent = `Last Updated: ${formatted}`;
+      }
+    }
+
     /* ─── FY 2026 historical data (72 events) ───────────────────────────────
        Used for YoY comparisons: radar overlay, KPI deltas, gauge prev-year line.
        Columns: name, attendance, secBudget, etop, guards, k9, medOnsite,
@@ -4059,71 +4402,86 @@
     }
 
     function saveDrawerEdits() {
-      if (!_drawerEvent) return;
+      if (!_drawerEvent || !_drawerEvent.id) {
+        console.error('Cannot save: No event ID');
+        return;
+      }
+
+      // Collect all edited values
+      const updates = {};
       const inputs = document.querySelectorAll('#drawerBody [data-key]');
+
       inputs.forEach(inp => {
         const key = inp.dataset.key;
         const raw = inp.value.trim();
+
         // Numeric fields
-        const numericKeys = ['attendance','etop','budget','secBudget','guards','k9',
-                             'medOnsite','teamOnsite','loadDays','showDays','contractorHrs'];
+        const numericKeys = ['attendance','etop','regEtop','mdp','mma','budget','secBudget','medCost',
+                             'guards','k9','medOnsite','teamOnsite','loadDays','showDays','contractorHrs'];
+
         if (numericKeys.includes(key)) {
-          _drawerEvent[key] = raw === '' ? null : Number(raw);
+          updates[key] = raw === '' ? null : parseFloat(raw);
         } else {
-          _drawerEvent[key] = raw === '' ? null : raw;
+          updates[key] = raw === '' ? null : raw;
         }
       });
 
-      // Exit edit mode
-      _drawerEditing = false;
-      document.getElementById('drawerEditBtn').style.display   = '';
-      document.getElementById('drawerSaveBtn').style.display   = 'none';
-      document.getElementById('drawerCancelBtn').style.display = 'none';
-      document.getElementById('eventDrawer').classList.remove('editing');
+      // Add metadata
+      updates.lastModified = firebase.firestore.FieldValue.serverTimestamp();
+      updates.modifiedBy = currentUser ? currentUser.email : 'anonymous';
 
-      // Update title in case name changed
-      document.getElementById('drawerTitle').textContent = _drawerEvent.name.replace(/ FY27$/,'');
+      console.log('💾 Saving to Firestore:', _drawerEvent.id, updates);
 
-      // Re-render view mode
-      renderDrawerBody(_drawerEvent, false);
+      // Show saving state
+      const saveBtn = document.getElementById('drawerSaveBtn');
+      const originalText = saveBtn.textContent;
+      saveBtn.textContent = 'Saving...';
+      saveBtn.disabled = true;
 
-      // Show saved toast
-      const toast = document.getElementById('drawerSavedToast');
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 2000);
+      // Write to Firestore
+      db.collection('events').doc(_drawerEvent.id).update(updates)
+        .then(() => {
+          console.log('✅ Saved successfully');
 
-      // Stamp last-updated in header
-      const lu = document.getElementById('lastUpdated');
-      if (lu) {
-        const now = new Date();
-        const t = now.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit', hour12:true });
-        const d = now.toLocaleDateString('en-US', { month:'short', day:'numeric' });
-        lu.textContent = `Updated ${d} at ${t}`;
-        lu.classList.add('visible');
-      }
+          // Exit edit mode
+          _drawerEditing = false;
+          document.getElementById('drawerEditBtn').style.display   = '';
+          document.getElementById('drawerSaveBtn').style.display   = 'none';
+          document.getElementById('drawerCancelBtn').style.display = 'none';
+          document.getElementById('eventDrawer').classList.remove('editing');
 
-      // Rebuild all charts & table with updated data
-      const q = typeof globalQ !== 'undefined' ? globalQ : 'all';
-      const filtered = filteredEvents(q);
-      rebuildKPIs(filtered);
-      rebuildYoYChart(filtered);
-      rebuildAttendanceChart(filtered);
-      rebuildStatusDonut(filtered);
-      rebuildRegionChart(filtered);
-      rebuildEtopQtrChart(filtered);
-      rebuildEtopOwnerChart(filtered);
-      rebuildEtopEventChart(filtered);
-      rebuildLeadChart(filtered);
-      rebuildCoLeadChart(filtered);
-      rebuildRadarChart(filtered);
-      rebuildTypeQtrChart(filtered);
-      rebuildStats(filtered);
-      rebuildOwnerBars(filtered);
-      rebuildCtrHrsList(filtered);
-      const s = document.getElementById('tableSearch').value.toLowerCase();
-      buildTable(q, s);
-      buildUpcomingStrip(ALL_EVENTS);
-      buildGantt(ALL_EVENTS);
+          // Update local object for immediate UI feedback
+          Object.assign(_drawerEvent, updates);
+
+          // Update title in case name changed
+          if (updates.name) {
+            document.getElementById('drawerTitle').textContent = updates.name.replace(/ FY27$/,'');
+          }
+
+          // Re-render view mode
+          renderDrawerBody(_drawerEvent, false);
+
+          // Show saved toast
+          const toast = document.getElementById('drawerSavedToast');
+          if (toast) {
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+          }
+
+          // Note: Firestore listener will automatically rebuild dashboard
+          // No need to manually rebuild charts here!
+
+        })
+        .catch(err => {
+          console.error('❌ Save failed:', err);
+
+          // Show error toast
+          alert('Save failed: ' + err.message);
+
+          // Restore button
+          saveBtn.textContent = originalText;
+          saveBtn.disabled = false;
+        });
     }
 
     function closeDrawer() {
@@ -4140,5 +4498,8 @@
     buildGantt(ALL_EVENTS);
 
   </script>
+
+  </div><!-- End mainDashboard -->
+
 </body>
 </html>
