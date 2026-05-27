@@ -9,6 +9,12 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -1059,6 +1065,9 @@
           <button class="export-option" onclick="exportPrint(event)">
             <span class="opt-icon">🖨️</span> Print / Save PDF
           </button>
+          <button class="export-option" onclick="publishSnapshot(event)" style="border-top:1px solid rgba(124,92,191,0.3);margin-top:4px;padding-top:8px;">
+            <span class="opt-icon">🚀</span> Publish to GitHub
+          </button>
         </div>
       </button>
     </div>
@@ -1238,6 +1247,18 @@
     </div>
   </div>
 
+  <!-- ROW 2.5: Attendance by Event Type -->
+  <div class="bento bento-2" style="margin-bottom:10px;">
+    <div class="card accent-orange">
+      <div class="card-title"><span><span class="card-title-dot" style="background:var(--orange);box-shadow:0 0 6px var(--orange)"></span>Attendance by Event Type</span></div>
+      <canvas id="attByTypeChart" style="max-height:220px;"></canvas>
+    </div>
+    <div class="card">
+      <div class="card-title"><span><span class="card-title-dot"></span>Event Count by Type</span></div>
+      <canvas id="eventCountByTypeChart" style="max-height:220px;"></canvas>
+    </div>
+  </div>
+
   <!-- ROW 3: ETOP line chart (wide) + Gauge + Progress bars -->
   <div class="bento bento-3-2" style="margin-bottom:10px;">
 
@@ -1314,10 +1335,16 @@
   <!-- Gantt Timeline -->
   <div class="section-label">Timeline</div>
   <div class="card" style="margin-bottom:14px;">
-    <div class="card-title"><span><span class="card-title-dot" style="background:var(--purple-bright);box-shadow:0 0 6px var(--purple-bright)"></span>Event Timeline — FY 2027</span>
-      <span style="font-size:0.62rem;color:var(--text-dim);">Hover a bar for details · click an owner name to spotlight</span>
+    <div class="card-title" style="display:flex;justify-content:space-between;align-items:center;">
+      <div><span><span class="card-title-dot" style="background:var(--purple-bright);box-shadow:0 0 6px var(--purple-bright)"></span>Event Timeline — FY 2027</span>
+      <span style="font-size:0.62rem;color:var(--text-dim);">Hover a bar for details · click an owner name to spotlight</span></div>
+      <div style="display:flex;gap:4px;align-items:center;">
+        <button onclick="zoomGantt('out')" style="background:rgba(124,92,191,0.15);border:1px solid rgba(124,92,191,0.3);color:var(--text);padding:2px 8px;border-radius:4px;cursor:pointer;font-size:0.7rem;transition:all 0.2s;" onmouseover="this.style.background='rgba(124,92,191,0.25)'" onmouseout="this.style.background='rgba(124,92,191,0.15)'">−</button>
+        <span id="ganttZoomLevel" style="font-size:0.62rem;color:var(--text-muted);min-width:35px;text-align:center;">100%</span>
+        <button onclick="zoomGantt('in')" style="background:rgba(124,92,191,0.15);border:1px solid rgba(124,92,191,0.3);color:var(--text);padding:2px 8px;border-radius:4px;cursor:pointer;font-size:0.7rem;transition:all 0.2s;" onmouseover="this.style.background='rgba(124,92,191,0.25)'" onmouseout="this.style.background='rgba(124,92,191,0.15)'">+</button>
+      </div>
     </div>
-    <div class="gantt-wrap">
+    <div class="gantt-wrap" id="ganttWrap">
       <div class="gantt-inner" id="ganttInner"></div>
     </div>
   </div>
@@ -1393,7 +1420,6 @@
             <th>Attendees</th>
             <th>Budget ($)</th>
             <th>Sec Budget ($)</th>
-            <th>ETOP ($)</th>
             <th>PiPR ($)</th>
             <th>Guards</th>
             <th>K9</th>
@@ -1459,17 +1485,18 @@
       el('kpi2Value').textContent  = countries;
       _setDelta('kpi2Delta', ctyDeltaPct);
 
-      // 3 — ETOP (Pipe in the Room)
+      // 3 — PiPR (Pipe in the Room: ETOP + Registered ETOP + MDP + MMA)
       const totalEtop   = evts.reduce((s, e) => s + (e.etop || 0), 0);
-      const etopPct     = Math.min(Math.round(totalEtop / FY26.etop * 100), 100);
-      const etopDeltaPct = Math.round((totalEtop - FY26.etop) / FY26.etop * 100);
-      const etopLabel   = totalEtop >= 1e9 ? '$' + (totalEtop/1e9).toFixed(1) + 'B'
-                        : totalEtop >= 1e6 ? '$' + (totalEtop/1e6).toFixed(0) + 'M' : '—';
+      const totalPipr   = evts.reduce((s,e)=>s+(e.etop||0)+(e.regEtop||0)+(e.mdp||0)+(e.mma||0),0);
+      const piprPct     = Math.min(Math.round(totalPipr / (FY26.etop * 3) * 100), 100); // Adjust baseline for bigger numbers
+      const piprDeltaPct = Math.round((totalPipr - FY26.etop) / FY26.etop * 100);
+      const piprLabel   = totalPipr >= 1e9 ? '$' + (totalPipr/1e9).toFixed(1) + 'B'
+                        : totalPipr >= 1e6 ? '$' + (totalPipr/1e6).toFixed(0) + 'M' : '—';
       destroyChart('donut3');
-      chartRegistry['donut3'] = makeDonut('donut3', etopPct, '#ec4899', 'rgba(236,72,153,0.07)');
-      el('kpi3Center').textContent = etopPct + '%';
-      el('kpi3Value').textContent  = etopLabel;
-      _setDelta('kpi3Delta', etopDeltaPct);
+      chartRegistry['donut3'] = makeDonut('donut3', piprPct, '#ec4899', 'rgba(236,72,153,0.07)');
+      el('kpi3Center').textContent = piprPct + '%';
+      el('kpi3Value').textContent  = piprLabel;
+      _setDelta('kpi3Delta', piprDeltaPct);
 
       // 4 — Attendees
       const totalAtt    = evts.reduce((s, e) => s + (e.attendance || 0), 0);
@@ -1740,7 +1767,7 @@
       { name:'World Tour Milan (1) FY27',               owner:'Philip Drinkwater', country:'Italy',           city:'Milan',             venue:'MiCo',                       type:'External',          date:'6/11/2026', status:'Assigned',  attendance:null,  budget:null,     medCost:null,   secBudget:null,    etop:null,       regEtop:null, mdp:null, mma:null, guards:null, k9:null, medOnsite:null, teamOnsite:null, loadDays:null, showDays:null, contractorHrs:null },
       { name:'World Tour London (1) FY27',              owner:'Philip Drinkwater', country:'United Kingdom',  city:'London',            venue:'Excel London',               type:'External',          date:'6/18/2026', status:'Assigned',  attendance:null,  budget:null,     medCost:null,   secBudget:null,    etop:null,       regEtop:null, mdp:null, mma:null, guards:null, k9:null, medOnsite:null, teamOnsite:null, loadDays:null, showDays:null, contractorHrs:null },
       // ── Shaun Ram ──
-      { name:'Tableau Conference FY27',                 owner:'Shaun Ram',         country:'United States',   city:'San Diego',         venue:'San Diego Convention C.',    type:'External',          date:'5/3/2026',  status:'New',       attendance:null,  budget:null,     medCost:null,   secBudget:null,    etop:219900000,  regEtop:461500000, mdp:18900000, mma:1600000, guards:null, k9:null, medOnsite:null, teamOnsite:11,   loadDays:null, showDays:null, contractorHrs:null },
+      { name:'Tableau Conference FY27',                 owner:'Shaun Ram',         country:'United States',   city:'San Diego',         venue:'San Diego Convention C.',    type:'External',          date:'5/3/2026',  status:'New',       attendance:null,  budget:null,     medCost:null,   secBudget:null,    etop:615700000,  regEtop:461500000, mdp:18900000, mma:1600000, guards:null, k9:null, medOnsite:null, teamOnsite:11,   loadDays:null, showDays:null, contractorHrs:null },
       { name:'World Tour Tokyo FY27',                   owner:'Shaun Ram',         country:'Japan',           city:'Tokyo',             venue:'The Prince Park Tower',      type:'External',          date:'6/9/2026',  status:'Assigned',  attendance:null,  budget:null,     medCost:null,   secBudget:null,    etop:null,       regEtop:null, mdp:null, mma:null, guards:null, k9:null, medOnsite:null, teamOnsite:2,    loadDays:null, showDays:null, contractorHrs:null },
       // ── Troy Kapinos ──
       { name:'Informatica MDMG Toronto',                owner:'Troy Kapinos',      country:'Canada',          city:'Toronto',           venue:'',                           type:'External',          date:'2/26/2026', status:'Complete',  attendance:195,   budget:242000,   medCost:0,      secBudget:0,       etop:10900000,   regEtop:0, mdp:1800000, mma:0, guards:0,    k9:0,    medOnsite:0,    teamOnsite:0,    loadDays:2,    showDays:1, contractorHrs:0    },
@@ -1876,6 +1903,8 @@
     function fmtM(v) {
       if (v == null) return '<span class="muted">—</span>';
       if (v === 0)   return '<span class="muted">$0</span>';
+      // Show in billions if >= 1B, otherwise millions
+      if (v >= 1e9) return '$' + (v / 1e9).toFixed(2) + 'B';
       return '$' + (v / 1e6).toFixed(2) + 'M';
     }
 
@@ -2034,7 +2063,6 @@
             <td style="text-align:right">${fmt(e.attendance)}</td>
             <td style="text-align:right">${fmtM(e.budget)}</td>
             <td style="text-align:right">${fmtM(e.secBudget)}</td>
-            <td style="text-align:right">${fmtM(e.etop)}</td>
             <td style="text-align:right">${fmtM(piprVal)}</td>
             <td style="text-align:right">${fmt(e.guards)}</td>
             <td style="text-align:right">${fmt(e.k9)}</td>
@@ -2192,6 +2220,7 @@
     rebuildKPIs(ALL_EVENTS);
     rebuildYoYChart(ALL_EVENTS);
     rebuildAttendanceChart(ALL_EVENTS);
+    rebuildAttByTypeCharts(ALL_EVENTS);
     rebuildStatusDonut(ALL_EVENTS);
     rebuildRegionChart(ALL_EVENTS);
     rebuildEtopQtrChart(ALL_EVENTS);
@@ -2224,6 +2253,7 @@
       rebuildKPIs(evts);
       rebuildYoYChart(evts);
       rebuildAttendanceChart(evts);
+      rebuildAttByTypeCharts(evts);
       rebuildStatusDonut(evts);
       rebuildRegionChart(evts);
       rebuildEtopQtrChart(evts);
@@ -2311,6 +2341,73 @@
           })
         },
           scales:{ ...baseScales, y:{ ...baseScales.y, beginAtZero:true, ticks:{ color:tick, callback: v=> v>=1000?(v/1000).toFixed(0)+'k':v }}} }
+      });
+    }
+
+    /* ── Attendance by Event Type ── */
+    function rebuildAttByTypeCharts(evts) {
+      // Categorize events
+      const categories = {
+        'World Tour': [],
+        'Internal': [],
+        'External': [],
+        'Other': []
+      };
+
+      evts.forEach(e => {
+        if (e.name.includes('World Tour')) categories['World Tour'].push(e);
+        else if (e.type === 'Internal' || e.type === 'Executive Offsite') categories['Internal'].push(e);
+        else if (e.type === 'External') categories['External'].push(e);
+        else categories['Other'].push(e);
+      });
+
+      // Chart 1: Attendance by type
+      destroyChart('attByTypeChart');
+      const attData = {
+        labels: Object.keys(categories),
+        datasets: [{
+          label: 'Total Attendance',
+          data: Object.values(categories).map(cat => cat.reduce((sum, e) => sum + (e.attendance || 0), 0)),
+          backgroundColor: ['#14b8a6', '#a78bfa', '#f97316', '#64748b'],
+          borderColor: ['#14b8a6', '#a78bfa', '#f97316', '#64748b'],
+          borderWidth: 1
+        }]
+      };
+      chartRegistry['attByTypeChart'] = new Chart(document.getElementById('attByTypeChart'), {
+        type: 'bar',
+        data: attData,
+        options: {
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { color: grid }, ticks: { color: tick } },
+            y: { grid: { color: grid }, ticks: { color: tick, callback: v => v >= 1000 ? (v/1000).toFixed(0)+'k' : v } }
+          }
+        }
+      });
+
+      // Chart 2: Event count by type
+      destroyChart('eventCountByTypeChart');
+      const countData = {
+        labels: Object.keys(categories),
+        datasets: [{
+          label: 'Event Count',
+          data: Object.values(categories).map(cat => cat.length),
+          backgroundColor: ['#14b8a622', '#a78bfa22', '#f9731622', '#64748b22'],
+          borderColor: ['#14b8a6', '#a78bfa', '#f97316', '#64748b'],
+          borderWidth: 2,
+          borderRadius: 4
+        }]
+      };
+      chartRegistry['eventCountByTypeChart'] = new Chart(document.getElementById('eventCountByTypeChart'), {
+        type: 'bar',
+        data: countData,
+        options: {
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { color: grid }, ticks: { color: tick } },
+            y: { grid: { color: grid }, ticks: { color: tick } }
+          }
+        }
       });
     }
 
@@ -2571,7 +2668,8 @@
               moreCount: Math.max(0, oEvts.length - 6),
             });
           })
-        }, scales:baseScales }
+        }, scales:{ x: { grid: { color: grid }, ticks: { color: tick } },
+                     y: { grid: { color: grid }, ticks: { color: tick, autoSkip: false, maxRotation: 0 } } } }
       });
     }
 
@@ -2586,7 +2684,8 @@
             backgroundColor:ctx=>{ const g=ctx.chart.ctx.createLinearGradient(ctx.chart.chartArea?.right||200,0,0,0); g.addColorStop(0,'rgba(236,72,153,0.55)'); g.addColorStop(1,'rgba(236,72,153,0.08)'); return g; },
             borderColor:'#ec4899', borderWidth:1, borderRadius:3 }]
         },
-        options:{ indexAxis:'y', plugins:{legend:{display:false}}, scales:baseScales }
+        options:{ indexAxis:'y', plugins:{legend:{display:false}}, scales:{ x: { grid: { color: grid }, ticks: { color: tick } },
+                     y: { grid: { color: grid }, ticks: { color: tick, autoSkip: false, maxRotation: 0 } } } }
       });
     }
 
@@ -2998,6 +3097,24 @@
       window.print();
     }
 
+    /* ── Publish Snapshot to GitHub ── */
+    function publishSnapshot(e) {
+      e.stopPropagation();
+      document.getElementById('exportBtn').classList.remove('open');
+
+      // Serialize current dashboard state
+      const timestamp = new Date().toISOString();
+      const blob = new Blob([document.documentElement.outerHTML], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'index.html';
+      link.click();
+      URL.revokeObjectURL(url);
+
+      alert('✅ Dashboard exported as index.html\n\nNext steps:\n1. Replace index.html in your repo\n2. Commit and push to GitHub\n3. Wait 1-2 minutes for deployment\n\nYour dashboard will be live at:\nhttps://jritchie-dot.github.io/eventforce-fy27/');
+    }
+
     /* ══════════════════════════════════════════
        1. KPI ANIMATED COUNTER
        Smoothly rolls numbers when value changes
@@ -3067,49 +3184,71 @@
     function buildUpcomingStrip(evts) {
       const strip = document.getElementById('upcomingStrip');
       if (!strip) return;
-      const upcoming = evts
-        .filter(e => new Date(e.date) >= TODAY)
-        .sort((a,b) => new Date(a.date) - new Date(b.date))
-        .slice(0, 8);
+      // Sort ALL events chronologically, show first 8
+      const chronological = [...evts].sort((a,b) => new Date(a.date) - new Date(b.date)).slice(0, 8);
       strip.innerHTML = '';
-      if (!upcoming.length) return;
-      upcoming.forEach(e => {
-        const dDiff = Math.ceil((new Date(e.date) - TODAY) / 86400000);
-        const sc    = statusColor[e.status] || '#64748b';
-        const tc    = typeColor[e.type]     || '#64748b';
-        const q     = getQ(e.date);
-        const qc    = qColors[q]            || '#64748b';
-        const card  = document.createElement('div');
+      if (!chronological.length) return;
+
+      chronological.forEach(e => {
+        const eventDate = new Date(e.date);
+        const daysFromToday = Math.ceil((eventDate - TODAY) / 86400000);
+
+        // Timeline-based colors: past (blue), current week (green), upcoming (purple)
+        let timelineColor;
+        if (e.status === 'Complete' || daysFromToday < -7) {
+          timelineColor = '#7c5cbf'; // Blue for past
+        } else if (Math.abs(daysFromToday) <= 7) {
+          timelineColor = '#10b981'; // Green for current/live
+        } else {
+          timelineColor = '#a78bfa'; // Purple for upcoming
+        }
+
+        const sc = statusColor[e.status] || '#64748b';
+        const q  = getQ(e.date);
+        const qc = qColors[q] || '#64748b';
+        const card = document.createElement('div');
         card.className = 'up-card';
         card.title = 'Click to see full event details';
-        card.style.borderTopColor = tc;
         card.style.cssText += `cursor:pointer;`;
         card.innerHTML = `
           <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;">
             <span class="up-card-badge" style="background:${sc}22;color:${sc};border:1px solid ${sc}44;">${e.status||'—'}</span>
             <div style="text-align:right;">
-              <div class="up-card-countdown" style="color:${dDiff<=7?'#f97316':dDiff<=30?'#f59e0b':'#a78bfa'}">${dDiff}</div>
-              <div class="up-card-days">days</div>
+              <div class="up-card-countdown" style="color:${timelineColor}">${Math.abs(daysFromToday)}</div>
+              <div class="up-card-days">${daysFromToday < 0 ? 'ago' : 'days'}</div>
             </div>
           </div>
           <div class="up-card-name">${e.name.replace(/ FY27$/,'')}</div>
           <div class="up-card-meta">
-            <span style="color:${tc}">${e.type}</span>
+            <span style="color:${timelineColor}">${e.type}</span>
             <span style="color:${qc};font-weight:600;">${q}</span>
           </div>
           <div style="font-size:0.6rem;color:var(--text-dim);margin-top:3px;">${e.city||'TBD'} · ${eventDateRangeText(e)}</div>`;
-        card.style.setProperty('--tc', tc);
-        card.querySelector('.up-card-name').style.cssText += `;`;
-        // top accent line color
-        card.style.borderTop = `2px solid ${tc}`;
+        // top accent line uses timeline color
+        card.style.borderTop = `2px solid ${timelineColor}`;
         card.onclick = () => openDrawer(e);
         strip.appendChild(card);
       });
     }
 
     /* ══════════════════════════════════════════
-       3. GANTT TIMELINE
+       3. GANTT TIMELINE WITH ZOOM
     ══════════════════════════════════════════ */
+    let ganttZoom = 100; // percentage
+
+    function zoomGantt(direction) {
+      if (direction === 'in') ganttZoom = Math.min(ganttZoom + 25, 200);
+      else ganttZoom = Math.max(ganttZoom - 25, 50);
+
+      const inner = document.getElementById('ganttInner');
+      if (inner) {
+        inner.style.transform = `scaleX(${ganttZoom / 100})`;
+        inner.style.transformOrigin = 'left center';
+      }
+      const label = document.getElementById('ganttZoomLevel');
+      if (label) label.textContent = ganttZoom + '%';
+    }
+
     function buildGantt(evts) {
       const container = document.getElementById('ganttInner');
       if (!container) return;
@@ -3287,6 +3426,7 @@
 
     let _drawerEvent = null;   // reference to the live event object being shown
     let _drawerEditing = false;
+    let _drawerClickTime = 0;  // for double-click detection
 
     function renderDrawerBody(e, editMode) {
       const sc  = statusColor[e.status] || '#64748b';
@@ -3514,17 +3654,37 @@
     }
 
     function openDrawer(e) {
+      const now = Date.now();
+      const isDoubleClick = _drawerEvent === e && (now - _drawerClickTime) < 500;
+
       _drawerEvent   = e;
-      _drawerEditing = false;
-      document.getElementById('drawerTitle').textContent = e.name.replace(/ FY27$/,'');
-      document.getElementById('drawerEditBtn').style.display   = '';
-      document.getElementById('drawerSaveBtn').style.display   = 'none';
-      document.getElementById('drawerCancelBtn').style.display = 'none';
-      document.getElementById('drawerSavedToast').classList.remove('show');
-      document.getElementById('eventDrawer').classList.remove('editing');
-      renderDrawerBody(e, false);
-      document.getElementById('drawerOverlay').classList.add('visible');
-      document.getElementById('eventDrawer').classList.add('open');
+      _drawerClickTime = now;
+
+      if (isDoubleClick && !_drawerEditing) {
+        // Double-click detected - enter edit mode immediately
+        _drawerEditing = true;
+        document.getElementById('drawerTitle').textContent = e.name.replace(/ FY27$/,'');
+        document.getElementById('drawerEditBtn').style.display   = 'none';
+        document.getElementById('drawerSaveBtn').style.display   = '';
+        document.getElementById('drawerCancelBtn').style.display = '';
+        document.getElementById('drawerSavedToast').classList.remove('show');
+        document.getElementById('eventDrawer').classList.add('editing');
+        renderDrawerBody(e, true);
+        document.getElementById('drawerOverlay').classList.add('visible');
+        document.getElementById('eventDrawer').classList.add('open');
+      } else {
+        // Single click - normal view mode
+        _drawerEditing = false;
+        document.getElementById('drawerTitle').textContent = e.name.replace(/ FY27$/,'');
+        document.getElementById('drawerEditBtn').style.display   = '';
+        document.getElementById('drawerSaveBtn').style.display   = 'none';
+        document.getElementById('drawerCancelBtn').style.display = 'none';
+        document.getElementById('drawerSavedToast').classList.remove('show');
+        document.getElementById('eventDrawer').classList.remove('editing');
+        renderDrawerBody(e, false);
+        document.getElementById('drawerOverlay').classList.add('visible');
+        document.getElementById('eventDrawer').classList.add('open');
+      }
     }
 
     function toggleDrawerEdit() {
