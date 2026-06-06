@@ -19,11 +19,11 @@
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
     :root {
-      /* Purple-dominant palette matching reference */
-      --purple:      #7c5cbf;
-      --purple-bright: #a78bfa;
-      --purple-dim:  rgba(124,92,191,0.18);
-      --purple-glow: rgba(124,92,191,0.4);
+      /* Salesforce blue palette */
+      --purple:      #0176D3;
+      --purple-bright: #1B96FF;
+      --purple-dim:  rgba(0,118,211,0.10);
+      --purple-glow: rgba(0,118,211,0.20);
       --orange:      #f97316;
       --orange-dim:  rgba(249,115,22,0.15);
       --teal:        #14b8a6;
@@ -37,31 +37,31 @@
       --red:         #ef4444;
 
       /* Backgrounds */
-      --bg:     #0f0e1a;   /* page bg — deep purple-black */
-      --card:   #1a1830;   /* card bg */
-      --card2:  #211f38;   /* slightly lighter card */
-      --card3:  #2a2847;   /* hover / thead */
-      --border: rgba(124,92,191,0.22);
-      --border-bright: rgba(167,139,250,0.5);
+      --bg:     #f8f9fb;   /* page bg — off-white */
+      --card:   #ffffff;   /* card bg */
+      --card2:  #f0f4f8;   /* slightly darker card */
+      --card3:  #e5edf5;   /* hover / thead */
+      --border: rgba(0,118,211,0.15);
+      --border-bright: rgba(0,118,211,0.45);
 
       /* Text */
-      --text:       #e2e0f0;
-      --text-muted: #9490b8;
-      --text-dim:   #4e4a6e;
+      --text:       #0e1b2e;
+      --text-muted: #4a6480;
+      --text-dim:   #9ab0c4;
 
       /* Legacy aliases so existing JS color vars still work */
-      --blue:        #7c5cbf;
-      --blue-bright: #a78bfa;
-      --blue-dim:    rgba(124,92,191,0.18);
-      --blue-glow:   rgba(124,92,191,0.4);
-      --blue-mid:    #5b42a0;
+      --blue:        #0176D3;
+      --blue-bright: #1B96FF;
+      --blue-dim:    rgba(0,118,211,0.12);
+      --blue-glow:   rgba(0,118,211,0.25);
+      --blue-mid:    #014486;
       --cyan:        #14b8a6;
-      --cyan-dim:    rgba(20,184,166,0.15);
+      --cyan-dim:    rgba(20,184,166,0.12);
       --amber:       #f59e0b;
-      --navy:        #0f0e1a;
-      --navy2:       #1a1830;
-      --navy3:       #211f38;
-      --navy4:       #2a2847;
+      --navy:        #f8f9fb;
+      --navy2:       #ffffff;
+      --navy3:       #f0f4f8;
+      --navy4:       #e5edf5;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -71,15 +71,12 @@
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
-      background-image:
-        radial-gradient(ellipse at 15% 0%,   rgba(124,92,191,0.12) 0%, transparent 50%),
-        radial-gradient(ellipse at 85% 100%, rgba(20,184,166,0.06)  0%, transparent 50%),
-        radial-gradient(ellipse at 50% 50%,  rgba(249,115,22,0.03)  0%, transparent 60%);
+      background-image: none;
     }
 
     /* ── Top nav ── */
     .topbar {
-      background: linear-gradient(90deg, #130f27 0%, #1d1a35 50%, #130f27 100%);
+      background: #ffffff;
       border-bottom: 1px solid var(--border);
       padding: 0 24px;
       height: 48px;
@@ -217,7 +214,7 @@
       align-items: center;
       gap: 14px;
     }
-    .kpi:hover { border-color: var(--border-bright); box-shadow: 0 4px 20px rgba(124,92,191,0.15); }
+    .kpi:hover { border-color: var(--border-bright); box-shadow: 0 4px 20px rgba(0,161,224,0.15); }
     .kpi-accent {
       position: absolute;
       top: 0; left: 0; right: 0;
@@ -229,7 +226,7 @@
       bottom: -10px; right: -10px;
       width: 70px; height: 70px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(124,92,191,0.1) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(0,161,224,0.1) 0%, transparent 70%);
       pointer-events: none;
     }
     .kpi-donut-wrap {
@@ -339,12 +336,56 @@
       z-index: 1;
       position: relative;
     }
-    .leaflet-container { background: #0f0e1a; }
-    .leaflet-tile { filter: brightness(0.85) saturate(0.7) hue-rotate(200deg); }
-    .leaflet-popup-content-wrapper { background: #211f38 !important; border: 1px solid rgba(124,92,191,0.35) !important; box-shadow: 0 8px 24px rgba(0,0,0,0.6) !important; border-radius: 8px !important; }
-    .leaflet-popup-tip { background: #211f38 !important; }
+    .leaflet-container { background: #e8eef4; }
+    .leaflet-tile { filter: saturate(0.8) brightness(1.02); }
+    .leaflet-popup-content-wrapper { background: #ffffff !important; border: 1px solid rgba(0,118,211,0.25) !important; box-shadow: 0 4px 20px rgba(0,0,0,0.12) !important; border-radius: 8px !important; }
+    .leaflet-popup-tip { background: #ffffff !important; }
     .leaflet-popup-content { margin: 12px 16px !important; }
-    .leaflet-close-button { color: #9490b8 !important; }
+    .leaflet-close-button { color: #6ba4be !important; }
+
+    /* ── Map avatar pins ── */
+    .map-avatar-pin {
+      width: 32px; height: 32px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.62rem; font-weight: 800; color: #fff;
+      border: 2px solid rgba(255,255,255,0.85);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.55);
+      cursor: pointer;
+      font-family: Inter, sans-serif;
+      line-height: 1;
+      user-select: none;
+    }
+    .map-avatar-pin.upcoming { border-style: dashed; border-color: rgba(255,255,255,0.5); }
+
+    /* ── Map popup ── */
+    .map-popup { min-width: 220px; font-family: Inter, sans-serif; }
+    .map-popup-header { display: flex; align-items: center; gap: 9px; margin-bottom: 9px; }
+    .map-popup-avatar {
+      width: 30px; height: 30px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.6rem; font-weight: 800; color: #fff; flex-shrink: 0;
+    }
+    .map-popup-owner { font-size: 0.75rem; font-weight: 700; color: var(--text); }
+    .map-popup-city  { font-size: 0.65rem; color: var(--text-muted); margin-top: 1px; }
+    .map-popup-type-badge {
+      margin-left: auto; padding: 2px 8px; border-radius: 4px;
+      font-size: 0.6rem; font-weight: 700; white-space: nowrap; flex-shrink: 0;
+    }
+    .map-popup-name {
+      font-size: 0.82rem; font-weight: 600; color: var(--text);
+      margin-bottom: 7px; line-height: 1.35;
+    }
+    .map-popup-meta {
+      display: flex; gap: 12px; font-size: 0.7rem;
+      color: var(--text-muted); margin-bottom: 9px; flex-wrap: wrap;
+    }
+    .map-popup-meta .upcoming-label { color: #f59e0b; font-weight: 600; }
+    .map-popup-btn {
+      width: 100%; padding: 6px; background: var(--purple); border: none;
+      border-radius: 5px; color: #fff; font-size: 0.72rem; font-weight: 600;
+      cursor: pointer; transition: opacity .15s; font-family: Inter, sans-serif;
+    }
+    .map-popup-btn:hover { opacity: 0.82; }
 
     /* ── Budget cards ── */
     .budget-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
@@ -408,7 +449,7 @@
       border-bottom: 1px solid var(--border-bright);
       white-space: nowrap;
     }
-    tbody tr { border-bottom: 1px solid rgba(124,92,191,0.08); transition: background 0.1s; }
+    tbody tr { border-bottom: 1px solid rgba(0,161,224,0.08); transition: background 0.1s; }
     tbody tr:last-child { border-bottom: none; }
     tbody tr:hover { background: var(--card2); }
     tbody td { padding: 8px 11px; color: var(--text); white-space: nowrap; }
@@ -425,7 +466,7 @@
       letter-spacing: 0.06em;
     }
     .tag-ext   { background: var(--teal-dim);   color: var(--teal);           border: 1px solid rgba(20,184,166,0.3); }
-    .tag-int   { background: var(--purple-dim);  color: var(--purple-bright);  border: 1px solid rgba(124,92,191,0.3); }
+    .tag-int   { background: var(--purple-dim);  color: var(--purple-bright);  border: 1px solid rgba(0,161,224,0.3); }
     .tag-other { background: var(--orange-dim);  color: var(--orange);         border: 1px solid rgba(249,115,22,0.3); }
 
     .mini-bar-wrap { display: flex; align-items: center; }
@@ -555,23 +596,23 @@
     }
     .ctt-inner {
       background: #1e1c38;
-      border: 1px solid rgba(167,139,250,0.4);
+      border: 1px solid rgba(27,150,255,0.4);
       border-radius: 9px;
       padding: 11px 13px;
-      box-shadow: 0 10px 36px rgba(0,0,0,0.65), 0 0 0 1px rgba(167,139,250,0.08);
+      box-shadow: 0 10px 36px rgba(0,0,0,0.65), 0 0 0 1px rgba(27,150,255,0.08);
       font-family: 'Inter', sans-serif;
       font-size: 0.72rem;
-      color: #e2e0f0;
+      color: #0e1b2e;
     }
     .ctt-title {
       font-size: 0.68rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      color: #9490b8;
+      color: #6ba4be;
       margin-bottom: 7px;
       padding-bottom: 6px;
-      border-bottom: 1px solid rgba(124,92,191,0.2);
+      border-bottom: 1px solid rgba(0,161,224,0.2);
       display: flex;
       align-items: center;
       gap: 7px;
@@ -593,34 +634,34 @@
       justify-content: space-between;
       gap: 10px;
       padding: 3px 0;
-      border-bottom: 1px solid rgba(124,92,191,0.08);
+      border-bottom: 1px solid rgba(0,161,224,0.08);
       font-size: 0.68rem;
     }
     .ctt-row:last-child { border-bottom: none; }
-    .ctt-row-label { color: #9490b8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px; }
+    .ctt-row-label { color: #6ba4be; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px; }
     .ctt-row-val   { font-weight: 600; white-space: nowrap; flex-shrink: 0; }
     .ctt-event-list {
       display: flex; flex-direction: column; gap: 4px; margin-top: 6px;
       max-height: 260px; overflow-y: auto;
-      scrollbar-width: thin; scrollbar-color: rgba(124,92,191,0.4) transparent;
+      scrollbar-width: thin; scrollbar-color: rgba(0,161,224,0.4) transparent;
     }
     .ctt-event-list::-webkit-scrollbar { width: 4px; }
     .ctt-event-list::-webkit-scrollbar-track { background: transparent; }
-    .ctt-event-list::-webkit-scrollbar-thumb { background: rgba(124,92,191,0.4); border-radius: 2px; }
+    .ctt-event-list::-webkit-scrollbar-thumb { background: rgba(0,161,224,0.4); border-radius: 2px; }
     .ctt-event-item {
       display: flex;
       align-items: center;
       gap: 7px;
       padding: 4px 6px;
-      background: rgba(124,92,191,0.08);
+      background: rgba(0,161,224,0.08);
       border-radius: 5px;
       font-size: 0.65rem;
       flex-shrink: 0;
     }
     .ctt-event-dot  { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-    .ctt-event-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #e2e0f0; }
+    .ctt-event-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #0e1b2e; }
     .ctt-event-val  { font-weight: 700; flex-shrink: 0; font-size: 0.65rem; }
-    .ctt-divider    { border: none; border-top: 1px solid rgba(124,92,191,0.15); margin: 7px 0; }
+    .ctt-divider    { border: none; border-top: 1px solid rgba(0,161,224,0.15); margin: 7px 0; }
     .ctt-more       { display: none; } /* replaced by scroll */
 
     /* ════════════════════════════════════════════
@@ -643,7 +684,7 @@
       cursor: pointer;
       transition: border-color 0.15s, box-shadow 0.15s;
     }
-    .up-card:hover { border-color: rgba(167,139,250,0.5); box-shadow: 0 4px 18px rgba(124,92,191,0.18); }
+    .up-card:hover { border-color: rgba(27,150,255,0.5); box-shadow: 0 4px 18px rgba(0,161,224,0.18); }
     .up-card::before {
       content: '';
       position: absolute; top: 0; left: 0; right: 0; height: 2px;
@@ -684,12 +725,12 @@
       width: min(700px, 96vw);
       max-height: 80vh;
       overflow-y: auto;
-      box-shadow: 0 24px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(167,139,250,0.12);
+      box-shadow: 0 24px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(27,150,255,0.12);
       padding: 0;
-      scrollbar-width: thin; scrollbar-color: rgba(124,92,191,0.4) transparent;
+      scrollbar-width: thin; scrollbar-color: rgba(0,161,224,0.4) transparent;
     }
     .spotlight-panel::-webkit-scrollbar { width: 4px; }
-    .spotlight-panel::-webkit-scrollbar-thumb { background: rgba(124,92,191,0.4); border-radius: 2px; }
+    .spotlight-panel::-webkit-scrollbar-thumb { background: rgba(0,161,224,0.4); border-radius: 2px; }
     .spotlight-header {
       display: flex; align-items: center; gap: 12px;
       padding: 18px 20px 14px;
@@ -734,7 +775,7 @@
       cursor: pointer;
       transition: border-color 0.12s, background 0.12s;
     }
-    .spotlight-evt-row:hover { border-color: rgba(167,139,250,0.4); background: var(--card3); }
+    .spotlight-evt-row:hover { border-color: rgba(27,150,255,0.4); background: var(--card3); }
     .spotlight-evt-q { font-size: 0.6rem; font-weight: 700; text-align: center; }
     .spotlight-evt-name { font-weight: 600; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .spotlight-evt-date { color: var(--text-muted); font-size: 0.65rem; }
@@ -746,10 +787,10 @@
     ════════════════════════════════════════════ */
     .gantt-wrap {
       overflow-x: auto; overflow-y: visible;
-      scrollbar-width: thin; scrollbar-color: rgba(124,92,191,0.35) transparent;
+      scrollbar-width: thin; scrollbar-color: rgba(0,161,224,0.35) transparent;
     }
     .gantt-wrap::-webkit-scrollbar { height: 5px; }
-    .gantt-wrap::-webkit-scrollbar-thumb { background: rgba(124,92,191,0.35); border-radius: 3px; }
+    .gantt-wrap::-webkit-scrollbar-thumb { background: rgba(0,161,224,0.35); border-radius: 3px; }
     .gantt-inner { min-width: 900px; }
     .gantt-header {
       display: flex; border-bottom: 1px solid var(--border);
@@ -809,7 +850,7 @@
       transform: translateX(100%);
       transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
       overflow-y: auto;
-      scrollbar-width: thin; scrollbar-color: rgba(124,92,191,0.3) transparent;
+      scrollbar-width: thin; scrollbar-color: rgba(0,161,224,0.3) transparent;
     }
     .drawer.open { transform: translateX(0); }
     .drawer-header {
@@ -860,10 +901,10 @@
       cursor: pointer; border: 1px solid; transition: all 0.15s;
     }
     .drawer-edit-btn {
-      background: rgba(167,139,250,0.1); color: var(--purple-bright);
-      border-color: rgba(167,139,250,0.3);
+      background: rgba(27,150,255,0.1); color: var(--purple-bright);
+      border-color: rgba(27,150,255,0.3);
     }
-    .drawer-edit-btn:hover { background: rgba(167,139,250,0.2); border-color: var(--purple-bright); }
+    .drawer-edit-btn:hover { background: rgba(27,150,255,0.2); border-color: var(--purple-bright); }
     .drawer-save-btn {
       background: rgba(16,185,129,0.12); color: #10b981;
       border-color: rgba(16,185,129,0.35);
@@ -885,15 +926,15 @@
       padding: 3px 6px; font-size: 0.82rem; font-weight: 600;
       font-family: inherit; outline: none;
     }
-    .drawer-field-input:focus { border-color: var(--purple-bright); box-shadow: 0 0 0 2px rgba(167,139,250,0.15); }
+    .drawer-field-input:focus { border-color: var(--purple-bright); box-shadow: 0 0 0 2px rgba(27,150,255,0.15); }
     .drawer-field-select {
       width: 100%; background: var(--card3); color: var(--text);
       border: 1px solid var(--border-bright); border-radius: 4px;
       padding: 3px 6px; font-size: 0.82rem; font-weight: 600;
       font-family: inherit; outline: none; cursor: pointer;
     }
-    .drawer-field-select:focus { border-color: var(--purple-bright); box-shadow: 0 0 0 2px rgba(167,139,250,0.15); }
-    .drawer.editing .drawer-field { border-color: rgba(167,139,250,0.3); background: rgba(167,139,250,0.04); }
+    .drawer-field-select:focus { border-color: var(--purple-bright); box-shadow: 0 0 0 2px rgba(27,150,255,0.15); }
+    .drawer.editing .drawer-field { border-color: rgba(27,150,255,0.3); background: rgba(27,150,255,0.04); }
 
     /* ════════════════════════════════════════════
        KPI COUNTER ANIMATION
@@ -914,15 +955,15 @@
       font-weight: 700;
       font-family: inherit;
       border-radius: 5px;
-      border: 1px solid rgba(167,139,250,0.5);
-      background: rgba(124,92,191,0.15);
+      border: 1px solid rgba(27,150,255,0.5);
+      background: rgba(0,161,224,0.15);
       color: var(--purple-bright);
       cursor: pointer;
       letter-spacing: 0.04em;
       transition: all 0.15s;
       position: relative;
     }
-    .export-btn:hover { background: rgba(124,92,191,0.28); border-color: var(--purple-bright); box-shadow: 0 0 12px rgba(124,92,191,0.3); }
+    .export-btn:hover { background: rgba(0,161,224,0.28); border-color: var(--purple-bright); box-shadow: 0 0 12px rgba(0,161,224,0.3); }
     .export-btn svg { flex-shrink: 0; }
     .export-menu {
       display: none;
@@ -974,7 +1015,7 @@
     .export-overlay.visible { display: flex; }
     .export-spinner {
       width: 36px; height: 36px;
-      border: 3px solid rgba(167,139,250,0.2);
+      border: 3px solid rgba(27,150,255,0.2);
       border-top-color: var(--purple-bright);
       border-radius: 50%;
       animation: spin 0.7s linear infinite;
@@ -1065,7 +1106,7 @@
           <button class="export-option" onclick="exportPrint(event)">
             <span class="opt-icon">🖨️</span> Print / Save PDF
           </button>
-          <button class="export-option" onclick="publishSnapshot(event)" style="border-top:1px solid rgba(124,92,191,0.3);margin-top:4px;padding-top:8px;">
+          <button class="export-option" onclick="publishSnapshot(event)" style="border-top:1px solid rgba(0,161,224,0.3);margin-top:4px;padding-top:8px;">
             <span class="opt-icon">🚀</span> Publish to GitHub
           </button>
         </div>
@@ -1339,9 +1380,9 @@
       <div><span><span class="card-title-dot" style="background:var(--purple-bright);box-shadow:0 0 6px var(--purple-bright)"></span>Event Timeline — FY 2027</span>
       <span style="font-size:0.62rem;color:var(--text-dim);">Hover a bar for details · click an owner name to spotlight</span></div>
       <div style="display:flex;gap:4px;align-items:center;">
-        <button onclick="zoomGantt('out')" style="background:rgba(124,92,191,0.15);border:1px solid rgba(124,92,191,0.3);color:var(--text);padding:2px 8px;border-radius:4px;cursor:pointer;font-size:0.7rem;transition:all 0.2s;" onmouseover="this.style.background='rgba(124,92,191,0.25)'" onmouseout="this.style.background='rgba(124,92,191,0.15)'">−</button>
+        <button onclick="zoomGantt('out')" style="background:rgba(0,161,224,0.15);border:1px solid rgba(0,161,224,0.3);color:var(--text);padding:2px 8px;border-radius:4px;cursor:pointer;font-size:0.7rem;transition:all 0.2s;" onmouseover="this.style.background='rgba(0,161,224,0.25)'" onmouseout="this.style.background='rgba(0,161,224,0.15)'">−</button>
         <span id="ganttZoomLevel" style="font-size:0.62rem;color:var(--text-muted);min-width:35px;text-align:center;">100%</span>
-        <button onclick="zoomGantt('in')" style="background:rgba(124,92,191,0.15);border:1px solid rgba(124,92,191,0.3);color:var(--text);padding:2px 8px;border-radius:4px;cursor:pointer;font-size:0.7rem;transition:all 0.2s;" onmouseover="this.style.background='rgba(124,92,191,0.25)'" onmouseout="this.style.background='rgba(124,92,191,0.15)'">+</button>
+        <button onclick="zoomGantt('in')" style="background:rgba(0,161,224,0.15);border:1px solid rgba(0,161,224,0.3);color:var(--text);padding:2px 8px;border-radius:4px;cursor:pointer;font-size:0.7rem;transition:all 0.2s;" onmouseover="this.style.background='rgba(0,161,224,0.25)'" onmouseout="this.style.background='rgba(0,161,224,0.15)'">+</button>
       </div>
     </div>
     <div class="gantt-wrap" id="ganttWrap">
@@ -1369,7 +1410,7 @@
       <div id="medKpiEvents" style="font-size:1.6rem;font-weight:700;color:var(--purple-bright);line-height:1.1;margin-top:4px;">—</div>
       <div style="font-size:0.62rem;color:var(--text-dim);margin-top:2px;">of <span id="medKpiTotal2">—</span> total events</div>
     </div>
-    <div class="card" style="background:linear-gradient(135deg,#1a1830 60%,rgba(16,185,129,0.06));">
+    <div class="card" style="background:linear-gradient(135deg,#f0f9f6 60%,rgba(16,185,129,0.06));">
       <div class="card-title" style="font-size:0.62rem;border:none;padding-bottom:4px;margin-bottom:0;"><span><span class="card-title-dot" style="background:var(--green);box-shadow:0 0 6px var(--green)"></span>Avg Staff / Event</span></div>
       <div id="medKpiAvg" style="font-size:1.6rem;font-weight:700;color:var(--yellow);line-height:1.1;margin-top:4px;">—</div>
       <div style="font-size:0.62rem;color:var(--text-dim);margin-top:2px;">where coverage reported</div>
@@ -1442,19 +1483,19 @@
 
   <script>
     /* ── Chart defaults ── */
-    Chart.defaults.color = '#9490b8';
+    Chart.defaults.color = '#4a6480';
     Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
     Chart.defaults.font.size = 11;
 
-    const blue      = '#7c5cbf';
-    const blueDim   = 'rgba(124,92,191,0.25)';
-    const blueFill  = 'rgba(124,92,191,0.08)';
+    const blue      = '#0176D3';
+    const blueDim   = 'rgba(0,161,224,0.25)';
+    const blueFill  = 'rgba(0,161,224,0.08)';
     const cyan      = '#14b8a6';
     const cyanDim   = 'rgba(20,184,166,0.15)';
-    const purple    = '#a78bfa';
-    const purpleDim = 'rgba(167,139,250,0.18)';
-    const grid      = 'rgba(124,92,191,0.1)';
-    const tick      = '#9490b8';
+    const purple    = '#1B96FF';
+    const purpleDim = 'rgba(27,150,255,0.18)';
+    const grid      = 'rgba(0,0,0,0.08)';
+    const tick      = '#4a6480';
 
     const baseScales = {
       x: { grid: { color: grid }, ticks: { color: tick } },
@@ -1470,7 +1511,7 @@
       const evtPct      = Math.min(Math.round(evtCount / FY26.events * 100), 100);
       const evtDeltaPct = Math.round((evtCount - FY26.events) / FY26.events * 100);
       destroyChart('donut1');
-      chartRegistry['donut1'] = makeDonut('donut1', evtPct, '#a78bfa', 'rgba(167,139,250,0.07)');
+      chartRegistry['donut1'] = makeDonut('donut1', evtPct, '#1B96FF', 'rgba(27,150,255,0.07)');
       el('kpi1Center').textContent = evtPct + '%';
       el('kpi1Value').textContent  = evtCount;
       _setDelta('kpi1Delta', evtDeltaPct);
@@ -1560,7 +1601,7 @@
               backgroundColor: 'rgba(20,184,166,0.3)', borderColor: '#14b8a6', borderWidth: 1.5, borderRadius: 4 },
             { label: 'FY 2026',
               data: [FY26.events, FY26.countries, +(FY26.attendance/1000).toFixed(1), +(FY26.secBudget/1e6).toFixed(2)],
-              backgroundColor: 'rgba(167,139,250,0.25)', borderColor: '#a78bfa', borderWidth: 1.5, borderRadius: 4 }
+              backgroundColor: 'rgba(27,150,255,0.25)', borderColor: '#1B96FF', borderWidth: 1.5, borderRadius: 4 }
           ]
         },
         options: {
@@ -1677,17 +1718,36 @@
       { name:'AMER Peak Performers',                     city:'TBD',             type:'Internal',          date:'6/7/2026',  owner:'Hannah Engle',    lat:36.17,  lng:-115.14, attendees:null },
     ];
 
-    function makeIcon(color, upcoming) {
-      const size    = upcoming ? 9 : 12;
-      const opacity = upcoming ? '0.4' : '1';
-      const border  = upcoming ? '1.5px dashed rgba(255,255,255,0.5)' : '2px solid rgba(255,255,255,0.85)';
+    /* ── Owner colour map (needed by map markers AND by spotlight/strips below) ── */
+    const ownerColors = [
+      '#1B96FF','#14b8a6','#f97316','#ec4899','#f59e0b','#10b981','#0ea5e9','#00A1E0','#e11d48'
+    ];
+    const ownerColorMap = {};
+    function getOwnerColor(name) {
+      if (!ownerColorMap[name]) {
+        const keys = Object.keys(ownerColorMap);
+        ownerColorMap[name] = ownerColors[keys.length % ownerColors.length];
+      }
+      return ownerColorMap[name];
+    }
+
+    const typeColor = { 'External':'#14b8a6', 'Internal':'#1B96FF', 'Third Party':'#f59e0b', 'Executive Offsite':'#f97316' };
+
+    function makeOwnerIcon(owner, isUpcoming) {
+      const color    = getOwnerColor(owner === '—' ? '__unassigned__' : owner);
+      const initials = (owner === '—' || !owner)
+        ? '?'
+        : owner.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+      const cls = isUpcoming ? 'map-avatar-pin upcoming' : 'map-avatar-pin';
+      const opacity = isUpcoming ? '0.55' : '1';
       return L.divIcon({
         className: '',
-        html: `<div style="width:${size}px;height:${size}px;background:${color};opacity:${opacity};border:${border};border-radius:50%;box-shadow:0 0 7px ${color}88;"></div>`,
-        iconSize: [size, size], iconAnchor: [size/2, size/2]
+        html: `<div class="${cls}" style="background:${color};opacity:${opacity}">${initials}</div>`,
+        iconSize: [32, 32],
+        iconAnchor: [16, 16],
+        popupAnchor: [0, -18]
       });
     }
-    const typeColor = { 'External':'#14b8a6', 'Internal':'#a78bfa', 'Third Party':'#f59e0b', 'Executive Offsite':'#f97316' };
 
 
     /* ── Table filter ── */
@@ -1711,7 +1771,7 @@
       return '—';
     }
 
-    const qColors = { Q1:'#0ea5e9', Q2:'#14b8a6', Q3:'#f59e0b', Q4:'#a78bfa', '—':'#64748b' };
+    const qColors = { Q1:'#0ea5e9', Q2:'#14b8a6', Q3:'#f59e0b', Q4:'#1B96FF', '—':'#64748b' };
 
     function qTag(q) {
       const c = qColors[q] || '#64748b';
@@ -1909,9 +1969,9 @@
     };
 
     // Quarter badge style
-    const qBadge = { Q1:'color:#0ea5e9', Q2:'color:#14b8a6', Q3:'color:#f59e0b', Q4:'color:#a78bfa', '—':'color:#64748b' };
+    const qBadge = { Q1:'color:#0ea5e9', Q2:'color:#14b8a6', Q3:'color:#f59e0b', Q4:'color:#1B96FF', '—':'color:#64748b' };
 
-    const statusColor = { Complete:'#10b981', Assigned:'#a78bfa', New:'#f59e0b', Pending:'#f97316', Canceled:'#ef4444', '—':'#4e4a6e' };
+    const statusColor = { Complete:'#10b981', Assigned:'#1B96FF', New:'#f59e0b', Pending:'#f97316', Canceled:'#ef4444', '—':'#2d5572' };
     function fmt(v)  { return v == null ? '<span class="muted">—</span>' : Number(v).toLocaleString(); }
     function fmtM(v) {
       if (v == null) return '<span class="muted">—</span>';
@@ -1968,36 +2028,48 @@
     /* ── Map markers (placed here so ALL_EVENTS and getQ are already defined) ── */
     const mapMarkers = [];
     events.forEach(e => {
-      const color    = typeColor[e.type] || '#64748b';
-      const upcoming = e.attendees === null;
-      const icon     = makeIcon(color, upcoming);
+      const isUpcoming = e.attendees === null;
+      const icon       = makeOwnerIcon(e.owner, isUpcoming);
 
-      const detail = ALL_EVENTS.find(r => r.name === e.name) || {};
-      const etop   = detail.etop;
+      const detail     = ALL_EVENTS.find(r => r.name === e.name) || {};
+      const etop       = detail.etop;
+      const typeCol    = typeColor[e.type] || '#64748b';
+      const ownerCol   = getOwnerColor(e.owner === '—' ? '__unassigned__' : e.owner);
+      const initials   = (e.owner === '—' || !e.owner)
+        ? '?'
+        : e.owner.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
 
-      const attendeeHtml = upcoming
-        ? `<div style="color:#4e4a6e;font-style:italic;font-size:11px;margin-bottom:4px;">Upcoming event</div>`
-        : `<div style="color:#14b8a6;font-weight:700;font-size:13px;margin-bottom:4px;">👥 ${e.attendees.toLocaleString()} attendees</div>`;
-      const etopHtml = (etop != null && etop > 0)
-        ? `<div style="color:#f59e0b;font-weight:600;font-size:12px;margin-bottom:6px;">💰 $${(etop/1e6).toFixed(1)}M ETOP</div>`
+      const attendeeLine = isUpcoming
+        ? `<span class="upcoming-label">Upcoming</span>`
+        : `<span>👥 ${e.attendees.toLocaleString()}</span>`;
+      const etopLine = (etop != null && etop > 0)
+        ? `<span>💰 $${(etop/1e6).toFixed(1)}M ETOP</span>`
         : '';
+      // Escape single quotes in event name for the onclick handler
+      const safeName = e.name.replace(/'/g, "\\'");
+
+      const popupHtml = `
+        <div class="map-popup">
+          <div class="map-popup-header">
+            <div class="map-popup-avatar" style="background:${ownerCol}">${initials}</div>
+            <div>
+              <div class="map-popup-owner">${e.owner}</div>
+              <div class="map-popup-city">📍 ${e.city}</div>
+            </div>
+            <span class="map-popup-type-badge" style="background:${typeCol}22;color:${typeCol};border:1px solid ${typeCol}44">${e.type}</span>
+          </div>
+          <div class="map-popup-name">${e.name}</div>
+          <div class="map-popup-meta">
+            <span>📅 ${e.date}</span>
+            ${attendeeLine}
+            ${etopLine}
+          </div>
+          <button class="map-popup-btn" onclick="openDrawerByName('${safeName}')">View Details →</button>
+        </div>`;
 
       const marker = L.marker([e.lat, e.lng], { icon })
         .addTo(map)
-        .bindPopup(`
-          <div style="font-family:Inter,sans-serif;font-size:12px;color:#e2e0f0;min-width:190px;background:#211f38;padding:2px;">
-            <div style="font-weight:700;font-size:13px;margin-bottom:6px;color:#fff;">${e.name}</div>
-            <div style="color:#9490b8;margin-bottom:2px;">📍 ${e.city}</div>
-            <div style="color:#9490b8;margin-bottom:2px;">👤 ${e.owner}</div>
-            <div style="color:#9490b8;margin-bottom:6px;">📅 ${e.date}</div>
-            ${attendeeHtml}
-            ${etopHtml}
-            <div style="display:flex;gap:6px;align-items:center;">
-              <span style="background:${color}33;color:${color};border:1px solid ${color}66;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;">${e.type}</span>
-              <span style="background:rgba(167,139,250,0.15);color:#a78bfa;border:1px solid rgba(167,139,250,0.3);padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;">${getQ(e.date)}</span>
-            </div>
-          </div>
-        `, { maxWidth: 240 });
+        .bindPopup(popupHtml, { maxWidth: 260 });
       mapMarkers.push({ marker, eventName: e.name });
     });
 
@@ -2006,38 +2078,46 @@
     legend.onAdd = () => {
       const wrap = L.DomUtil.create('div');
       Object.assign(wrap.style, {
-        background:'#1a1830', color:'#e2e0f0', padding:'12px 14px', borderRadius:'8px',
-        fontFamily:'Inter,sans-serif', fontSize:'11px', border:'1px solid rgba(124,92,191,0.3)',
-        boxShadow:'0 4px 16px rgba(0,0,0,0.6)', lineHeight:'1.6'
+        background:'#ffffff', color:'#0e1b2e', padding:'12px 14px', borderRadius:'8px', border:'1px solid rgba(0,118,211,0.18)',
+        fontFamily:'Inter,sans-serif', fontSize:'11px', border:'1px solid rgba(0,161,224,0.3)',
+        boxShadow:'0 4px 16px rgba(0,0,0,0.6)', lineHeight:'1.6', maxWidth:'170px'
       });
-      function row(color, label, dashed) {
-        const r = document.createElement('div');
-        Object.assign(r.style, { display:'flex', alignItems:'center', gap:'8px', marginBottom:'4px' });
-        const dot = document.createElement('div');
-        const sz = dashed ? '9px' : '10px';
-        Object.assign(dot.style, { width:sz, height:sz, background:color, borderRadius:'50%',
-          flexShrink:'0', opacity: dashed ? '0.5' : '1',
-          border: dashed ? '1.5px dashed #94a3b8' : 'none' });
-        const lbl = document.createElement('span');
-        lbl.textContent = label;
-        r.appendChild(dot); r.appendChild(lbl);
-        return r;
-      }
       function heading(text) {
         const h = document.createElement('div');
-        Object.assign(h.style, { fontWeight:'700', color:'#9490b8', fontSize:'10px',
-          textTransform:'uppercase', letterSpacing:'0.1em', marginBottom:'6px', marginTop:'4px' });
+        Object.assign(h.style, { fontWeight:'700', color:'#6ba4be', fontSize:'10px',
+          textTransform:'uppercase', letterSpacing:'0.1em', marginBottom:'7px', marginTop:'4px' });
         h.textContent = text;
         return h;
       }
-      wrap.appendChild(heading('Event Type'));
-      wrap.appendChild(row('#14b8a6', 'External'));
-      wrap.appendChild(row('#a78bfa', 'Internal'));
-      wrap.appendChild(row('#f59e0b', 'Third Party'));
-      wrap.appendChild(row('#f97316', 'Exec Offsite'));
-      wrap.appendChild(heading('Status'));
-      wrap.appendChild(row('#a78bfa', 'Completed'));
-      wrap.appendChild(row('#9490b8', 'Upcoming', true));
+      // Owner avatar rows
+      const owners = [...new Set(events.map(e => e.owner).filter(o => o && o !== '—'))].sort();
+      owners.forEach(owner => {
+        const color    = getOwnerColor(owner);
+        const initials = owner.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+        const r = document.createElement('div');
+        Object.assign(r.style, { display:'flex', alignItems:'center', gap:'8px', marginBottom:'5px', cursor:'pointer' });
+        r.title = `Click to spotlight ${owner}`;
+        r.onclick = () => openSpotlight(owner);
+        const av = document.createElement('div');
+        Object.assign(av.style, {
+          width:'20px', height:'20px', borderRadius:'50%', background:color,
+          display:'flex', alignItems:'center', justifyContent:'center',
+          fontSize:'0.55rem', fontWeight:'800', color:'#fff', flexShrink:'0',
+          border:'1.5px solid rgba(255,255,255,0.7)'
+        });
+        av.textContent = initials;
+        const lbl = document.createElement('span');
+        lbl.textContent = owner.split(' ')[0]; // first name only for brevity
+        Object.assign(lbl.style, { whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' });
+        r.appendChild(av); r.appendChild(lbl);
+        wrap.appendChild(r);
+      });
+      // Status note
+      const note = document.createElement('div');
+      Object.assign(note.style, { marginTop:'8px', fontSize:'10px', color:'#6b6890', borderTop:'1px solid rgba(0,161,224,0.2)', paddingTop:'7px' });
+      note.textContent = 'Dimmed = upcoming · Click owner to spotlight';
+      wrap.insertBefore(heading('Team'), wrap.firstChild);
+      wrap.appendChild(note);
       return wrap;
     };
     legend.addTo(map);
@@ -2094,6 +2174,10 @@
     /* sorted array used by drawer so it matches table sort */
     const _sortedEvents = [...ALL_EVENTS].sort((a,b) => new Date(a.date) - new Date(b.date));
     function openDrawerByIdx(idx) { openDrawer(_sortedEvents[idx]); }
+    function openDrawerByName(name) {
+      const ev = ALL_EVENTS.find(e => e.name === name);
+      if (ev) { map.closePopup(); openDrawer(ev); }
+    }
 
     /* ── Region mapping ── */
     const regionMap = {
@@ -2176,12 +2260,12 @@
         ? `<span class="ctt-title-dot" style="background:${titleColor};box-shadow:0 0 5px ${titleColor}88;"></span>`
         : '';
       let html = `<div class="ctt-title">${dot}${escHtml(title)}</div>`;
-      if (primary) html += `<div class="ctt-primary" style="color:${primaryColor||'#e2e0f0'}">${escHtml(primary)}</div>`;
+      if (primary) html += `<div class="ctt-primary" style="color:${primaryColor||'#0e1b2e'}">${escHtml(primary)}</div>`;
       if (rows && rows.length) {
         html += rows.map(([label, val, vc]) =>
           `<div class="ctt-row">
             <span class="ctt-row-label">${escHtml(String(label))}</span>
-            <span class="ctt-row-val" style="color:${vc||'#e2e0f0'}">${escHtml(String(val))}</span>
+            <span class="ctt-row-val" style="color:${vc||'#0e1b2e'}">${escHtml(String(val))}</span>
           </div>`
         ).join('');
       }
@@ -2343,8 +2427,8 @@
               primary: total > 0 ? total.toLocaleString() + ' attendees' : 'No data',
               primaryColor: '#f97316',
               rows: [
-                ['Events this month', allMEvts.length, '#9490b8'],
-                ['Events w/ attendance', mEvts.length, '#9490b8'],
+                ['Events this month', allMEvts.length, '#6ba4be'],
+                ['Events w/ attendance', mEvts.length, '#6ba4be'],
               ],
               events: mEvts.sort((a,b)=>(b.attendance||0)-(a.attendance||0)),
               evtColor: '#f97316',
@@ -2381,8 +2465,8 @@
         datasets: [{
           label: 'Total Attendance',
           data: Object.values(categories).map(cat => cat.reduce((sum, e) => sum + (e.attendance || 0), 0)),
-          backgroundColor: ['#14b8a6', '#a78bfa', '#f97316', '#64748b'],
-          borderColor: ['#14b8a6', '#a78bfa', '#f97316', '#64748b'],
+          backgroundColor: ['#14b8a6', '#1B96FF', '#f97316', '#64748b'],
+          borderColor: ['#14b8a6', '#1B96FF', '#f97316', '#64748b'],
           borderWidth: 1
         }]
       };
@@ -2405,8 +2489,8 @@
         datasets: [{
           label: 'Event Count',
           data: Object.values(categories).map(cat => cat.length),
-          backgroundColor: ['#14b8a622', '#a78bfa22', '#f9731622', '#64748b22'],
-          borderColor: ['#14b8a6', '#a78bfa', '#f97316', '#64748b'],
+          backgroundColor: ['#14b8a622', '#1B96FF22', '#f9731622', '#64748b22'],
+          borderColor: ['#14b8a6', '#1B96FF', '#f97316', '#64748b'],
           borderWidth: 2,
           borderRadius: 4
         }]
@@ -2429,7 +2513,7 @@
       const counts = {};
       evts.forEach(e => { counts[e.status] = (counts[e.status]||0) + 1; });
       const order = ['Complete','Assigned','New','Pending','Canceled','—'];
-      const colors = { Complete:'#10b981', Assigned:'#a78bfa', New:'#f59e0b', Pending:'#f97316', Canceled:'#ef4444', '—':'#4e4a6e' };
+      const colors = { Complete:'#10b981', Assigned:'#1B96FF', New:'#f59e0b', Pending:'#f97316', Canceled:'#ef4444', '—':'#2d5572' };
       const labels = order.filter(s => counts[s]);
       const data   = labels.map(s => counts[s]);
       const bgColors = labels.map(s => colors[s]);
@@ -2443,7 +2527,7 @@
         const row = document.createElement('div'); row.style.cssText='display:flex;align-items:center;justify-content:space-between;gap:6px;';
         const left = document.createElement('div'); left.style.cssText='display:flex;align-items:center;gap:6px;';
         const dot = document.createElement('div'); dot.style.cssText=`width:8px;height:8px;border-radius:50%;background:${bgColors[i]};flex-shrink:0;`;
-        const lbl = document.createElement('span'); lbl.style.cssText='color:#9490b8;font-size:0.68rem;'; lbl.textContent = s;
+        const lbl = document.createElement('span'); lbl.style.cssText='color:#6ba4be;font-size:0.68rem;'; lbl.textContent = s;
         const cnt = document.createElement('span'); cnt.style.cssText=`color:${bgColors[i]};font-size:0.72rem;font-weight:700;`; cnt.textContent = data[i];
         left.appendChild(dot); left.appendChild(lbl);
         row.appendChild(left); row.appendChild(cnt); leg.appendChild(row);
@@ -2452,7 +2536,7 @@
       const evtsSnap = evts.slice();
       chartRegistry['statusDonut'] = new Chart(document.getElementById('statusDonut'), {
         type:'doughnut',
-        data:{ labels, datasets:[{ data, backgroundColor:bgColors, borderWidth:2, borderColor:'#1a1830', borderRadius:3 }] },
+        data:{ labels, datasets:[{ data, backgroundColor:bgColors, borderWidth:2, borderColor:'#ffffff', borderRadius:3 }] },
         options:{ cutout:'68%', plugins:{ legend:{display:false},
           tooltip: makeTooltipHandler((dp) => {
             const status = labels[dp.dataIndex];
@@ -2464,7 +2548,7 @@
               titleColor: c,
               primary: data[dp.dataIndex] + ' events',
               primaryColor: c,
-              rows: att > 0 ? [['Total attendance', att.toLocaleString(), '#9490b8']] : [],
+              rows: att > 0 ? [['Total attendance', att.toLocaleString(), '#6ba4be']] : [],
               events: grp.slice().sort((a,b) => new Date(a.date)-new Date(b.date)),
               evtColor: c,
               evtValFn: e => e.date,
@@ -2484,7 +2568,7 @@
       chartRegistry['regionChart'] = new Chart(document.getElementById('regionChart'), {
         type:'bar', data:{ labels:regions, datasets:[
           { label:'Events',    data:regions.map(r=>evtCount[r]), backgroundColor:'rgba(20,184,166,0.65)', borderColor:'#14b8a6', borderWidth:1, borderRadius:3, yAxisID:'yLeft' },
-          { label:'Attendees', data:regions.map(r=>attCount[r]), backgroundColor:'rgba(167,139,250,0.35)', borderColor:'#a78bfa', borderWidth:1, borderRadius:3, yAxisID:'yRight' }
+          { label:'Attendees', data:regions.map(r=>attCount[r]), backgroundColor:'rgba(27,150,255,0.35)', borderColor:'#1B96FF', borderWidth:1, borderRadius:3, yAxisID:'yRight' }
         ]},
         options:{ plugins:{ legend:{ display:true, labels:{color:tick,boxWidth:12,font:{size:11}}},
           tooltip: makeTooltipHandler((dp, allDps) => {
@@ -2498,9 +2582,9 @@
               primary: evtCount[region] + ' events',
               primaryColor: '#14b8a6',
               rows: [
-                ['Attendance',  att > 0 ? att.toLocaleString() : '—', '#a78bfa'],
+                ['Attendance',  att > 0 ? att.toLocaleString() : '—', '#1B96FF'],
                 ['Total ETOP',  etopSum > 0 ? '$'+(etopSum/1e6).toFixed(0)+'M' : '—', '#f59e0b'],
-                ['Countries',   [...new Set(grp.map(e=>e.country).filter(Boolean))].length, '#9490b8'],
+                ['Countries',   [...new Set(grp.map(e=>e.country).filter(Boolean))].length, '#6ba4be'],
               ],
               events: grp.sort((a,b)=>(b.attendance||0)-(a.attendance||0)),
               evtColor: '#14b8a6',
@@ -2567,7 +2651,7 @@
               rows: [
                 ['Cumulative',    '$'+cumV.toFixed(1)+'M', '#f59e0b'],
                 ['This month',    monV > 0 ? '$'+monV.toFixed(1)+'M' : '—', '#f97316'],
-                ['Events w/ ETOP', mEvts.length, '#9490b8'],
+                ['Events w/ ETOP', mEvts.length, '#6ba4be'],
               ],
               events: mEvts.sort((a,b)=>b.etop-a.etop),
               evtColor: '#f59e0b',
@@ -2587,8 +2671,8 @@
       const sorted=Object.entries(ownerEtop).sort((a,b)=>b[1]-a[1]);
       chartRegistry['etopOwnerChart'] = new Chart(document.getElementById('etopOwnerChart'), {
         type:'bar', data:{ labels:sorted.map(([k])=>k), datasets:[{ label:'ETOP ($M)', data:sorted.map(([,v])=>v/1e6),
-          backgroundColor:ctx=>{ const g=ctx.chart.ctx.createLinearGradient(ctx.chart.chartArea?.right||300,0,0,0); g.addColorStop(0,'rgba(167,139,250,0.7)'); g.addColorStop(1,'rgba(167,139,250,0.08)'); return g; },
-          borderColor:'#a78bfa', borderWidth:1, borderRadius:3 }] },
+          backgroundColor:ctx=>{ const g=ctx.chart.ctx.createLinearGradient(ctx.chart.chartArea?.right||300,0,0,0); g.addColorStop(0,'rgba(27,150,255,0.7)'); g.addColorStop(1,'rgba(27,150,255,0.08)'); return g; },
+          borderColor:'#1B96FF', borderWidth:1, borderRadius:3 }] },
         options:{ indexAxis:'y', plugins:{ legend:{display:false},
           tooltip: makeTooltipHandler((dp) => {
             const owner  = sorted[dp.dataIndex][0];
@@ -2597,16 +2681,16 @@
             const topEvt = oEvts.sort((a,b)=>b.etop-a.etop)[0];
             return cttBuild({
               title: owner,
-              titleColor: '#a78bfa',
+              titleColor: '#1B96FF',
               primary: '$'+(total/1e6).toFixed(1)+'M ETOP',
-              primaryColor: '#a78bfa',
+              primaryColor: '#1B96FF',
               rows: [
-                ['Events w/ ETOP', oEvts.length, '#9490b8'],
-                ['Top event',      topEvt ? topEvt.name.replace(/ FY27$/,'') : '—', '#e2e0f0'],
-                ['Avg per event',  oEvts.length ? '$'+(total/oEvts.length/1e6).toFixed(1)+'M' : '—', '#9490b8'],
+                ['Events w/ ETOP', oEvts.length, '#6ba4be'],
+                ['Top event',      topEvt ? topEvt.name.replace(/ FY27$/,'') : '—', '#0e1b2e'],
+                ['Avg per event',  oEvts.length ? '$'+(total/oEvts.length/1e6).toFixed(1)+'M' : '—', '#6ba4be'],
               ],
               events: oEvts.sort((a,b)=>b.etop-a.etop),
-              evtColor: '#a78bfa',
+              evtColor: '#1B96FF',
               evtValFn: e => '$'+(e.etop/1e6).toFixed(1)+'M',
               moreCount: Math.max(0, oEvts.length - 6),
             });
@@ -2634,13 +2718,13 @@
               primary: '$'+(e.etop/1e6).toFixed(1)+'M ETOP',
               primaryColor: '#f59e0b',
               rows: [
-                ['Owner',      e.owner, '#e2e0f0'],
+                ['Owner',      e.owner, '#0e1b2e'],
                 ['Status',     e.status||'—', sc],
-                ['Date',       e.date, '#9490b8'],
-                ['Attendance', e.attendance ? e.attendance.toLocaleString() : '—', '#9490b8'],
-                ['City',       e.city||'—', '#9490b8'],
-                ['Guards',     e.guards != null ? e.guards : '—', '#9490b8'],
-                ['K9',         e.k9 != null ? e.k9 : '—', '#9490b8'],
+                ['Date',       e.date, '#6ba4be'],
+                ['Attendance', e.attendance ? e.attendance.toLocaleString() : '—', '#6ba4be'],
+                ['City',       e.city||'—', '#6ba4be'],
+                ['Guards',     e.guards != null ? e.guards : '—', '#6ba4be'],
+                ['K9',         e.k9 != null ? e.k9 : '—', '#6ba4be'],
               ],
             });
           })
@@ -2656,8 +2740,8 @@
       const sorted = Object.entries(leadCount).sort((a,b)=>b[1]-a[1]);
       chartRegistry['leadChart'] = new Chart(document.getElementById('leadChart'), {
         type:'bar', data:{ labels:sorted.map(([k])=>k), datasets:[{ label:'Events', data:sorted.map(([,v])=>v),
-          backgroundColor:ctx=>{ const g=ctx.chart.ctx.createLinearGradient(ctx.chart.chartArea?.right||200,0,0,0); g.addColorStop(0,'rgba(124,92,191,0.65)'); g.addColorStop(1,'rgba(124,92,191,0.08)'); return g; },
-          borderColor:'#7c5cbf', borderWidth:1, borderRadius:3 }] },
+          backgroundColor:ctx=>{ const g=ctx.chart.ctx.createLinearGradient(ctx.chart.chartArea?.right||200,0,0,0); g.addColorStop(0,'rgba(0,161,224,0.65)'); g.addColorStop(1,'rgba(0,161,224,0.08)'); return g; },
+          borderColor:'#0176D3', borderWidth:1, borderRadius:3 }] },
         options:{ indexAxis:'y', plugins:{ legend:{display:false},
           tooltip: makeTooltipHandler((dp) => {
             const owner  = sorted[dp.dataIndex][0];
@@ -2667,16 +2751,16 @@
             const etopSum = oEvts.reduce((s,e)=>s+(e.etop||0),0);
             return cttBuild({
               title: owner,
-              titleColor: '#7c5cbf',
+              titleColor: '#0176D3',
               primary: count + ' events as lead',
-              primaryColor: '#a78bfa',
+              primaryColor: '#1B96FF',
               rows: [
                 ['Completed',  done, '#10b981'],
                 ['In progress', count - done, '#f59e0b'],
                 ['Total ETOP',  etopSum > 0 ? '$'+(etopSum/1e6).toFixed(0)+'M' : '—', '#f59e0b'],
               ],
               events: oEvts.sort((a,b) => new Date(a.date)-new Date(b.date)),
-              evtColor: '#a78bfa',
+              evtColor: '#1B96FF',
               evtValFn: e => e.date,
               moreCount: Math.max(0, oEvts.length - 6),
             });
@@ -2722,10 +2806,10 @@
           datasets: [{
             label: 'FY27 Coverage %',
             data: fy27Data,
-            backgroundColor: 'rgba(167,139,250,0.18)',
-            borderColor: '#a78bfa',
+            backgroundColor: 'rgba(27,150,255,0.18)',
+            borderColor: '#1B96FF',
             borderWidth: 2,
-            pointBackgroundColor: '#a78bfa',
+            pointBackgroundColor: '#1B96FF',
             pointRadius: 3,
           }, {
             label: 'FY26 Baseline %',
@@ -2757,8 +2841,8 @@
           scales: {
             r: {
               min: 0, max: 100,
-              grid:        { color: 'rgba(124,92,191,0.15)' },
-              angleLines:  { color: 'rgba(124,92,191,0.12)' },
+              grid:        { color: 'rgba(0,161,224,0.15)' },
+              angleLines:  { color: 'rgba(0,161,224,0.12)' },
               pointLabels: { color: tick, font: { size: 9 } },
               ticks:       { display: false, stepSize: 25 }
             }
@@ -2776,8 +2860,8 @@
       destroyChart('typeQtrChart');
       const qtrs = ['Q1','Q2','Q3','Q4'];
       const types = ['External','Internal','Third Party','Executive Offsite'];
-      const typeColors = ['rgba(20,184,166,0.7)','rgba(167,139,250,0.7)','rgba(245,158,11,0.7)','rgba(249,115,22,0.7)'];
-      const typeBorders = ['#14b8a6','#a78bfa','#f59e0b','#f97316'];
+      const typeColors = ['rgba(20,184,166,0.7)','rgba(27,150,255,0.7)','rgba(245,158,11,0.7)','rgba(249,115,22,0.7)'];
+      const typeBorders = ['#14b8a6','#1B96FF','#f59e0b','#f97316'];
       const datasets = types.map((t,i) => ({
         label: t,
         data: qtrs.map(q => evts.filter(e => e.type===t && getQ(e.date)===q).length),
@@ -2805,7 +2889,7 @@
                 primary: grp.length + ' events',
                 primaryColor: typeC,
                 rows: [
-                  ['Attendance', att > 0 ? att.toLocaleString() : '—', '#9490b8'],
+                  ['Attendance', att > 0 ? att.toLocaleString() : '—', '#6ba4be'],
                   ['ETOP',       etopSum > 0 ? '$'+(etopSum/1e6).toFixed(0)+'M' : '—', '#f59e0b'],
                 ],
                 events: grp.sort((a,b)=>new Date(a.date)-new Date(b.date)),
@@ -2853,7 +2937,7 @@
       evts.forEach(e => { if(!e.etop||e.owner==='—') return; ownerEtop[e.owner]=(ownerEtop[e.owner]||0)+e.etop; });
       const sorted = Object.entries(ownerEtop).sort((a,b)=>b[1]-a[1]);
       const max = sorted[0]?.[1] || 1;
-      const colors = ['#f59e0b','#a78bfa','#14b8a6','#f97316','#ec4899','#10b981','#0ea5e9'];
+      const colors = ['#f59e0b','#1B96FF','#14b8a6','#f97316','#ec4899','#10b981','#0ea5e9'];
       const wrap = document.getElementById('etopOwnerBars');
       if (!wrap) return;
       wrap.innerHTML = '';
@@ -2880,7 +2964,7 @@
       if (!wrap) return;
       const top = evts.filter(e=>e.contractorHrs>0).sort((a,b)=>b.contractorHrs-a.contractorHrs).slice(0,4);
       const maxH = top[0]?.contractorHrs || 1;
-      const colors = ['#f59e0b','#a78bfa','#14b8a6','#f97316'];
+      const colors = ['#f59e0b','#1B96FF','#14b8a6','#f97316'];
       wrap.innerHTML = '';
       top.forEach((e, i) => {
         const pct = Math.round(e.contractorHrs/maxH*100);
@@ -2949,8 +3033,8 @@
               }
             },
             scales: {
-              x: { beginAtZero: true, grid: { color: 'rgba(148,144,184,0.08)' }, ticks: { color: '#9490b8' } },
-              y: { grid: { display: false }, ticks: { color: '#9490b8', font: { size: 10 } } }
+              x: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.07)' }, ticks: { color: '#4a6480' } },
+              y: { grid: { display: false }, ticks: { color: '#4a6480', font: { size: 10 } } }
             }
           }
         });
@@ -2988,8 +3072,8 @@
               }
             },
             scales: {
-              x: { beginAtZero: true, grid: { color: 'rgba(148,144,184,0.08)' }, ticks: { color: '#9490b8', callback: v => '$' + (v/1000).toFixed(0) + 'k' } },
-              y: { grid: { display: false }, ticks: { color: '#9490b8', font: { size: 10 } } }
+              x: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.07)' }, ticks: { color: '#4a6480', callback: v => '$' + (v/1000).toFixed(0) + 'k' } },
+              y: { grid: { display: false }, ticks: { color: '#4a6480', font: { size: 10 } } }
             }
           }
         });
@@ -3039,7 +3123,7 @@
       await new Promise(r => setTimeout(r, 80)); // let overlay render
       try {
         const canvas = await html2canvas(document.getElementById('root') || document.body, {
-          backgroundColor: '#0f0e1a',
+          backgroundColor: '#f8f9fb',
           scale: 2,               // 2× for retina-quality
           useCORS: true,
           allowTaint: true,
@@ -3065,7 +3149,7 @@
       await new Promise(r => setTimeout(r, 80));
       try {
         const canvas = await html2canvas(document.getElementById('root') || document.body, {
-          backgroundColor: '#0f0e1a',
+          backgroundColor: '#f8f9fb',
           scale: 1.5,
           useCORS: true,
           allowTaint: true,
@@ -3082,7 +3166,7 @@
 <title>Eventforce Dashboard FY2027</title>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
-  body { background:#0f0e1a; }
+  body { background:#f8f9fb; }
   img { width:100%; display:block; }
   @page { size: auto; margin: 0; }
   @media print { body { -webkit-print-color-adjust:exact; print-color-adjust:exact; } }
@@ -3182,17 +3266,7 @@
        2. COMING UP STRIP
     ══════════════════════════════════════════ */
     const TODAY = new Date('2026-05-09');
-    const ownerColors = [
-      '#a78bfa','#14b8a6','#f97316','#ec4899','#f59e0b','#10b981','#0ea5e9','#7c5cbf','#e11d48'
-    ];
-    const ownerColorMap = {};
-    function getOwnerColor(name) {
-      if (!ownerColorMap[name]) {
-        const keys = Object.keys(ownerColorMap);
-        ownerColorMap[name] = ownerColors[keys.length % ownerColors.length];
-      }
-      return ownerColorMap[name];
-    }
+    /* ownerColors / getOwnerColor defined earlier (near map section) */
 
     function buildUpcomingStrip(evts) {
       const strip = document.getElementById('upcomingStrip');
@@ -3209,11 +3283,11 @@
         // Timeline-based colors: past (blue), current week (green), upcoming (purple)
         let timelineColor;
         if (e.status === 'Complete' || daysFromToday < -7) {
-          timelineColor = '#7c5cbf'; // Blue for past
+          timelineColor = '#0176D3'; // Blue for past
         } else if (Math.abs(daysFromToday) <= 7) {
           timelineColor = '#10b981'; // Green for current/live
         } else {
-          timelineColor = '#a78bfa'; // Purple for upcoming
+          timelineColor = '#1B96FF'; // Purple for upcoming
         }
 
         const sc = statusColor[e.status] || '#64748b';
@@ -3349,19 +3423,19 @@
     ══════════════════════════════════════════ */
     const spotlightOwnerColors = {
       'Philip Drinkwater':'#14b8a6',
-      'John Ritchie':     '#a78bfa',
+      'John Ritchie':     '#1B96FF',
       'Natalie Durham':   '#ec4899',
       'Troy Kapinos':     '#f97316',
       'Chris Moore':      '#f59e0b',
       'Hannah Engle':     '#10b981',
       'Tuli Mateialona':  '#0ea5e9',
       'Shaun Ram':        '#e11d48',
-      'Jon Losciale':     '#7c5cbf',
+      'Jon Losciale':     '#0176D3',
     };
 
     function openSpotlight(ownerName) {
       const evts   = ALL_EVENTS.filter(e => e.owner === ownerName);
-      const color  = spotlightOwnerColors[ownerName] || '#a78bfa';
+      const color  = spotlightOwnerColors[ownerName] || '#1B96FF';
       const done   = evts.filter(e => e.status === 'Complete').length;
       const etopSum = evts.reduce((s,e) => s + (e.etop||0), 0);
       const attSum  = evts.reduce((s,e) => s + (e.attendance||0), 0);
@@ -3446,7 +3520,7 @@
       const tc  = typeColor[e.type]     || '#64748b';
       const q   = getQ(e.date);
       const qc  = qColors[q]            || '#64748b';
-      const oc  = spotlightOwnerColors[e.owner] || '#a78bfa';
+      const oc  = spotlightOwnerColors[e.owner] || '#1B96FF';
 
       // Update sub-badges (status/type/quarter reflect live state)
       document.getElementById('drawerSub').innerHTML =
@@ -3603,7 +3677,7 @@
 
       // ── Staffing section ──────────────────────
       const staffFields = [
-        ['Guards',    'guards',      '#a78bfa'],
+        ['Guards',    'guards',      '#1B96FF'],
         ['K9',        'k9',          '#f97316'],
         ['Medical',   'medOnsite',   '#10b981'],
         ['GS&S Team', 'teamOnsite',  '#14b8a6'],
