@@ -1152,7 +1152,7 @@
       <div class="kpi-text">
         <div class="kpi-label">Events Supported</div>
         <div class="kpi-value" id="kpi1Value">—</div>
-        <div class="kpi-prev">Prev Year: 72</div>
+        <div class="kpi-prev" id="kpi1Prev">Prev Year: 72</div>
         <div class="kpi-delta" id="kpi1Delta"></div>
       </div>
     </div>
@@ -1166,7 +1166,7 @@
       <div class="kpi-text">
         <div class="kpi-label">Countries Covered</div>
         <div class="kpi-value" id="kpi2Value" style="color:var(--teal);text-shadow:0 0 20px rgba(20,184,166,0.4)">—</div>
-        <div class="kpi-prev">Prev Year: 26</div>
+        <div class="kpi-prev" id="kpi2Prev">Prev Year: 26</div>
         <div class="kpi-delta" id="kpi2Delta"></div>
       </div>
     </div>
@@ -1180,7 +1180,7 @@
       <div class="kpi-text">
         <div class="kpi-label">Pipe in the Room</div>
         <div class="kpi-value" id="kpi3Value" style="color:var(--pink);text-shadow:0 0 20px rgba(236,72,153,0.4)">—</div>
-        <div class="kpi-prev">Prev Year: $16.7B</div>
+        <div class="kpi-prev" id="kpi3Prev">Prev Year: $16.7B</div>
         <div class="kpi-delta" id="kpi3Delta"></div>
       </div>
     </div>
@@ -1194,7 +1194,7 @@
       <div class="kpi-text">
         <div class="kpi-label">Attendees</div>
         <div class="kpi-value" id="kpi4Value" style="color:var(--yellow);text-shadow:0 0 20px rgba(245,158,11,0.35)">—</div>
-        <div class="kpi-prev">Prev Year: 263K</div>
+        <div class="kpi-prev" id="kpi4Prev">Prev Year: 263K</div>
         <div class="kpi-delta" id="kpi4Delta"></div>
       </div>
     </div>
@@ -1515,6 +1515,7 @@
       chartRegistry['donut1'] = makeDonut('donut1', evtPct, '#1B96FF', 'rgba(27,150,255,0.07)');
       el('kpi1Center').textContent = evtPct + '%';
       el('kpi1Value').textContent  = evtCount;
+      if (el('kpi1Prev')) el('kpi1Prev').textContent = 'Prev Year: ' + fy26.events;
       _setDelta('kpi1Delta', evtDeltaPct);
 
       // 2 — Countries Covered
@@ -1525,6 +1526,7 @@
       chartRegistry['donut2'] = makeDonut('donut2', ctyPct, '#14b8a6', 'rgba(20,184,166,0.07)');
       el('kpi2Center').textContent = (countries >= fy26.countries ? '▲' : '') + ctyPct + '%';
       el('kpi2Value').textContent  = countries;
+      if (el('kpi2Prev')) el('kpi2Prev').textContent = 'Prev Year: ' + fy26.countries;
       _setDelta('kpi2Delta', ctyDeltaPct);
 
       // 3 — PiPR (Pipe in the Room: ETOP + Registered ETOP + MDP + MMA)
@@ -1538,6 +1540,9 @@
       chartRegistry['donut3'] = makeDonut('donut3', piprPct, '#ec4899', 'rgba(236,72,153,0.07)');
       el('kpi3Center').textContent = piprPct + '%';
       el('kpi3Value').textContent  = piprLabel;
+      const fy26EtopLabel = fy26.etop >= 1e9 ? '$' + (fy26.etop/1e9).toFixed(1) + 'B'
+                          : fy26.etop >= 1e6 ? '$' + (fy26.etop/1e6).toFixed(0) + 'M' : '$0';
+      if (el('kpi3Prev')) el('kpi3Prev').textContent = 'Prev Year: ' + fy26EtopLabel;
       _setDelta('kpi3Delta', piprDeltaPct);
 
       // 4 — Attendees
@@ -1549,6 +1554,8 @@
       chartRegistry['donut4'] = makeDonut('donut4', attPct, '#f59e0b', 'rgba(245,158,11,0.06)');
       el('kpi4Center').textContent = attPct + '%';
       el('kpi4Value').textContent  = attLabel;
+      const fy26AttLabel = fy26.attendance >= 1000 ? Math.round(fy26.attendance/1000) + 'K' : fy26.attendance;
+      if (el('kpi4Prev')) el('kpi4Prev').textContent = 'Prev Year: ' + fy26AttLabel;
       _setDelta('kpi4Delta', attDeltaPct);
     }
 
