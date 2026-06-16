@@ -3328,9 +3328,7 @@
         card.innerHTML = `
           <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;">
             <span class="up-card-badge" style="background:${sc}22;color:${sc};border:1px solid ${sc}44;">${e.status||'—'}</span>
-            <div style="text-align:right;">
-              ${daysFromToday >= 0 ? `<div class="up-card-countdown" style="color:${timelineColor}">${daysFromToday}</div><div class="up-card-days">days</div>` : ''}
-            </div>
+            <div></div>
           </div>
           <div class="up-card-name">${e.name.replace(/ FY27$/,'')}</div>
           <div class="up-card-meta">
