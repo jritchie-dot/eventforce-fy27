@@ -3293,14 +3293,17 @@
     /* ══════════════════════════════════════════
        2. COMING UP STRIP
     ══════════════════════════════════════════ */
-    const TODAY = new Date('2026-05-09');
+    const TODAY = new Date(); TODAY.setHours(0,0,0,0);
     /* ownerColors / getOwnerColor defined earlier (near map section) */
 
     function buildUpcomingStrip(evts) {
       const strip = document.getElementById('upcomingStrip');
       if (!strip) return;
-      // Sort ALL events chronologically, show first 8
-      const chronological = [...evts].sort((a,b) => new Date(a.date) - new Date(b.date)).slice(0, 8);
+      // Sort upcoming events chronologically (today or future only), show first 8
+      const chronological = [...evts]
+        .filter(e => new Date(e.date) >= TODAY)
+        .sort((a,b) => new Date(a.date) - new Date(b.date))
+        .slice(0, 8);
       strip.innerHTML = '';
       if (!chronological.length) return;
 
