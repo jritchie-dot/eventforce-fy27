@@ -196,7 +196,7 @@
     /* ── KPI row ── */
     .kpi-row {
       display: grid;
-      grid-template-columns: repeat(4,1fr);
+      grid-template-columns: repeat(5,1fr);
       gap: 10px;
       margin-bottom: 12px;
     }
@@ -1196,6 +1196,20 @@
         <div class="kpi-value" id="kpi4Value" style="color:var(--yellow);text-shadow:0 0 20px rgba(245,158,11,0.35)">—</div>
         <div class="kpi-prev" id="kpi4Prev">Prev Year: 263K</div>
         <div class="kpi-delta" id="kpi4Delta"></div>
+      </div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-accent" style="background:linear-gradient(90deg,transparent,var(--teal),transparent)"></div>
+      <div class="kpi-bg-glow" style="background:radial-gradient(circle,rgba(20,184,166,0.1) 0%,transparent 70%)"></div>
+      <div class="kpi-donut-wrap">
+        <canvas id="donut5"></canvas>
+        <div class="kpi-donut-center" id="kpi5Center">85%</div>
+      </div>
+      <div class="kpi-text">
+        <div class="kpi-label">Screening</div>
+        <div class="kpi-value" style="color:var(--teal);text-shadow:0 0 20px rgba(20,184,166,0.4);font-size:1.45rem;">45,674</div>
+        <div class="kpi-prev" style="color:var(--text-dim);">Alerts: 6,868 · 15% rate</div>
+        <div class="kpi-delta up">4 events · 0 weapons</div>
       </div>
     </div>
   </div>
@@ -3310,6 +3324,13 @@
     /* ══════════════════════════════════════════
        SECURITY SCREENING CHARTS
     ══════════════════════════════════════════ */
+    // KPI donut5 — static clear rate (85%)
+    (function() {
+      const clearRate = 85;
+      chartRegistry['donut5'] = makeDonut('donut5', clearRate, '#14b8a6', 'rgba(20,184,166,0.07)');
+      document.getElementById('kpi5Center').textContent = clearRate + '%';
+    })();
+
     (function buildScreeningCharts() {
       const SCREENING = [
         { label: 'WT NYC\n4/29/26',      screened: 19365, alerts: 3506, alertRate: 18 },
