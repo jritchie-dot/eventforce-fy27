@@ -1450,32 +1450,93 @@
   <div class="bento bento-4" style="margin-bottom:10px;">
     <div class="card accent-teal">
       <div class="card-title" style="font-size:0.62rem;border:none;padding-bottom:4px;margin-bottom:0;"><span><span class="card-title-dot" style="background:var(--teal);box-shadow:0 0 6px var(--teal)"></span>Total Screened</span></div>
-      <div style="font-size:1.6rem;font-weight:700;color:var(--teal);line-height:1.1;margin-top:4px;">45,674</div>
-      <div style="font-size:0.62rem;color:var(--text-dim);margin-top:2px;">visitors across 4 events</div>
+      <div id="scrTotal" style="font-size:1.6rem;font-weight:700;color:var(--teal);line-height:1.1;margin-top:4px;">223,476</div>
+      <div id="scrSubtitle" style="font-size:0.62rem;color:var(--text-dim);margin-top:2px;">visitors across 8 events</div>
     </div>
     <div class="card accent-orange">
       <div class="card-title" style="font-size:0.62rem;border:none;padding-bottom:4px;margin-bottom:0;"><span><span class="card-title-dot" style="background:var(--orange);box-shadow:0 0 6px var(--orange)"></span>Total Alerts</span></div>
-      <div style="font-size:1.6rem;font-weight:700;color:var(--orange);line-height:1.1;margin-top:4px;">6,868</div>
+      <div id="scrAlerts" style="font-size:1.6rem;font-weight:700;color:var(--orange);line-height:1.1;margin-top:4px;">31,466</div>
       <div style="font-size:0.62rem;color:var(--text-dim);margin-top:2px;">alarm activations logged</div>
     </div>
     <div class="card accent-yellow">
       <div class="card-title" style="font-size:0.62rem;border:none;padding-bottom:4px;margin-bottom:0;"><span><span class="card-title-dot" style="background:var(--yellow);box-shadow:0 0 6px var(--yellow)"></span>Avg Alert Rate</span></div>
-      <div style="font-size:1.6rem;font-weight:700;color:var(--yellow);line-height:1.1;margin-top:4px;">15%</div>
+      <div id="scrRate" style="font-size:1.6rem;font-weight:700;color:var(--yellow);line-height:1.1;margin-top:4px;">14%</div>
       <div style="font-size:0.62rem;color:var(--text-dim);margin-top:2px;">weighted across events</div>
     </div>
     <div class="card accent-green">
       <div class="card-title" style="font-size:0.62rem;border:none;padding-bottom:4px;margin-bottom:0;"><span><span class="card-title-dot" style="background:var(--green);box-shadow:0 0 6px var(--green)"></span>Total Bags Screened</span></div>
-      <div style="font-size:1.6rem;font-weight:700;color:var(--green);line-height:1.1;margin-top:4px;">6,591</div>
-      <div style="font-size:0.62rem;color:var(--text-dim);margin-top:2px;">NYC + Toronto · no weapons found</div>
+      <div id="scrBags" style="font-size:1.6rem;font-weight:700;color:var(--green);line-height:1.1;margin-top:4px;">32,844</div>
+      <div id="scrBagsNote" style="font-size:0.62rem;color:var(--text-dim);margin-top:2px;">CKO + NYC + Tableau + Toronto + Connections · no weapons found</div>
     </div>
   </div>
 
-  <!-- Per-event screening breakdown (2×2 grid) -->
+  <!-- Per-event screening breakdown (2-col grid, 8 events) -->
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+
+    <!-- CKO -->
+    <div class="card accent-yellow">
+      <div class="card-title" style="margin-bottom:12px;"><span><span class="card-title-dot" style="background:var(--yellow);box-shadow:0 0 8px var(--yellow)"></span>CKO — 2/9–12/26 · Q1</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+        <div style="background:var(--card2);border-radius:8px;padding:10px;">
+          <div style="font-size:0.6rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.07em;">Screened</div>
+          <div style="font-size:1.4rem;font-weight:700;color:var(--yellow);margin-top:2px;">90,185</div>
+        </div>
+        <div style="background:var(--card2);border-radius:8px;padding:10px;">
+          <div style="font-size:0.6rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.07em;">Alerts</div>
+          <div style="font-size:1.4rem;font-weight:700;color:var(--orange);margin-top:2px;">10,869</div>
+        </div>
+        <div style="background:var(--card2);border-radius:8px;padding:10px;">
+          <div style="font-size:0.6rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.07em;">Alert Rate</div>
+          <div style="font-size:1.4rem;font-weight:700;color:var(--green);margin-top:2px;">12%</div>
+        </div>
+        <div style="background:var(--card2);border-radius:8px;padding:10px;">
+          <div style="font-size:0.6rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.07em;">Duration</div>
+          <div style="font-size:1.4rem;font-weight:700;color:var(--yellow);margin-top:2px;">4 days</div>
+        </div>
+      </div>
+      <div style="font-size:0.62rem;color:var(--text-muted);margin-bottom:6px;font-weight:600;">Notes</div>
+      <div style="padding:8px 10px;background:var(--card2);border-radius:6px;border-left:2px solid var(--yellow);font-size:0.67rem;color:var(--text-dim);">
+        Largest FY27 screening event by volume · Multi-day, multi-gate corporate kickoff
+      </div>
+      <div style="margin-top:10px;display:flex;align-items:center;gap:8px;font-size:0.67rem;color:var(--text-muted);">
+        <span>🎒 Bags: <strong style="color:var(--text);">2,185</strong></span>
+        <span>· Weapons: <strong style="color:var(--green);">0</strong></span>
+      </div>
+    </div>
+
+    <!-- TDX -->
+    <div class="card" style="border-top:2px solid #ef4444;">
+      <div class="card-title" style="margin-bottom:12px;"><span><span class="card-title-dot" style="background:#ef4444;box-shadow:0 0 8px #ef4444"></span>TDX — 4/14–16/26 · Q1</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+        <div style="background:var(--card2);border-radius:8px;padding:10px;">
+          <div style="font-size:0.6rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.07em;">Screened</div>
+          <div style="font-size:1.4rem;font-weight:700;color:#ef4444;margin-top:2px;">31,592</div>
+        </div>
+        <div style="background:var(--card2);border-radius:8px;padding:10px;">
+          <div style="font-size:0.6rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.07em;">Alerts</div>
+          <div style="font-size:1.4rem;font-weight:700;color:var(--orange);margin-top:2px;">6,632</div>
+        </div>
+        <div style="background:var(--card2);border-radius:8px;padding:10px;">
+          <div style="font-size:0.6rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.07em;">Alert Rate</div>
+          <div style="font-size:1.4rem;font-weight:700;color:#ef4444;margin-top:2px;">21%</div>
+        </div>
+        <div style="background:var(--card2);border-radius:8px;padding:10px;">
+          <div style="font-size:0.6rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.07em;">Duration</div>
+          <div style="font-size:1.4rem;font-weight:700;color:#ef4444;margin-top:2px;">3 days</div>
+        </div>
+      </div>
+      <div style="padding:8px 10px;background:var(--card2);border-radius:6px;border-left:2px solid #ef4444;font-size:0.67rem;color:var(--text-dim);">
+        Highest alert rate in FY27 · 3-day tech developer conference
+      </div>
+      <div style="margin-top:10px;display:flex;align-items:center;gap:8px;font-size:0.67rem;color:var(--text-muted);">
+        <span>🎒 Bags: <strong style="color:var(--text-dim);">no data</strong></span>
+        <span>· Weapons: <strong style="color:var(--green);">0</strong></span>
+      </div>
+    </div>
 
     <!-- NYC -->
     <div class="card accent-teal">
-      <div class="card-title" style="margin-bottom:12px;"><span><span class="card-title-dot" style="background:var(--teal);box-shadow:0 0 8px var(--teal)"></span>World Tour NYC — 4/29/26</span></div>
+      <div class="card-title" style="margin-bottom:12px;"><span><span class="card-title-dot" style="background:var(--teal);box-shadow:0 0 8px var(--teal)"></span>World Tour NYC — 4/29/26 · Q1</span></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
         <div style="background:var(--card2);border-radius:8px;padding:10px;">
           <div style="font-size:0.6rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.07em;">Screened</div>
@@ -1516,9 +1577,39 @@
       </div>
     </div>
 
+    <!-- Tableau -->
+    <div class="card accent-orange">
+      <div class="card-title" style="margin-bottom:12px;"><span><span class="card-title-dot" style="background:var(--orange);box-shadow:0 0 8px var(--orange)"></span>Tableau Conference — 5/5–7/26 · Q2</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+        <div style="background:var(--card2);border-radius:8px;padding:10px;">
+          <div style="font-size:0.6rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.07em;">Screened</div>
+          <div style="font-size:1.4rem;font-weight:700;color:var(--orange);margin-top:2px;">27,514</div>
+        </div>
+        <div style="background:var(--card2);border-radius:8px;padding:10px;">
+          <div style="font-size:0.6rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.07em;">Alerts</div>
+          <div style="font-size:1.4rem;font-weight:700;color:var(--orange);margin-top:2px;">4,434</div>
+        </div>
+        <div style="background:var(--card2);border-radius:8px;padding:10px;">
+          <div style="font-size:0.6rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.07em;">Alert Rate</div>
+          <div style="font-size:1.4rem;font-weight:700;color:var(--yellow);margin-top:2px;">16%</div>
+        </div>
+        <div style="background:var(--card2);border-radius:8px;padding:10px;">
+          <div style="font-size:0.6rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.07em;">Duration</div>
+          <div style="font-size:1.4rem;font-weight:700;color:var(--orange);margin-top:2px;">3 days</div>
+        </div>
+      </div>
+      <div style="padding:8px 10px;background:var(--card2);border-radius:6px;border-left:2px solid var(--orange);font-size:0.67rem;color:var(--text-dim);">
+        3-day analytics conference · Multi-gate venue
+      </div>
+      <div style="margin-top:10px;display:flex;align-items:center;gap:8px;font-size:0.67rem;color:var(--text-muted);">
+        <span>🎒 Bags: <strong style="color:var(--text);">8,114</strong></span>
+        <span>· Weapons: <strong style="color:var(--green);">0</strong></span>
+      </div>
+    </div>
+
     <!-- Toronto -->
     <div class="card accent-green">
-      <div class="card-title" style="margin-bottom:12px;"><span><span class="card-title-dot" style="background:var(--green);box-shadow:0 0 8px var(--green)"></span>World Tour Toronto — 5/7/26</span></div>
+      <div class="card-title" style="margin-bottom:12px;"><span><span class="card-title-dot" style="background:var(--green);box-shadow:0 0 8px var(--green)"></span>World Tour Toronto — 5/7/26 · Q2</span></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
         <div style="background:var(--card2);border-radius:8px;padding:10px;">
           <div style="font-size:0.6rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.07em;">Screened</div>
@@ -1559,9 +1650,51 @@
       </div>
     </div>
 
+    <!-- Connections -->
+    <div class="card" style="border-top:2px solid #8b5cf6;">
+      <div class="card-title" style="margin-bottom:12px;"><span><span class="card-title-dot" style="background:#8b5cf6;box-shadow:0 0 8px #8b5cf6"></span>Connections — 6/3–4/26 · Q2</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+        <div style="background:var(--card2);border-radius:8px;padding:10px;">
+          <div style="font-size:0.6rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.07em;">Screened</div>
+          <div style="font-size:1.4rem;font-weight:700;color:#8b5cf6;margin-top:2px;">28,511</div>
+        </div>
+        <div style="background:var(--card2);border-radius:8px;padding:10px;">
+          <div style="font-size:0.6rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.07em;">Alerts</div>
+          <div style="font-size:1.4rem;font-weight:700;color:var(--orange);margin-top:2px;">3,663</div>
+        </div>
+        <div style="background:var(--card2);border-radius:8px;padding:10px;">
+          <div style="font-size:0.6rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.07em;">Alert Rate</div>
+          <div style="font-size:1.4rem;font-weight:700;color:var(--yellow);margin-top:2px;">13%</div>
+        </div>
+        <div style="background:var(--card2);border-radius:8px;padding:10px;">
+          <div style="font-size:0.6rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.07em;">Gates</div>
+          <div style="font-size:1.4rem;font-weight:700;color:#8b5cf6;margin-top:2px;">5</div>
+        </div>
+      </div>
+      <div style="font-size:0.62rem;color:var(--text-muted);margin-bottom:6px;font-weight:600;">Entry Points</div>
+      <div style="display:flex;flex-direction:column;gap:4px;font-size:0.67rem;">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 8px;background:var(--card2);border-radius:5px;">
+          <span style="color:var(--text-muted);">Starbucks Gate</span>
+          <span style="color:var(--text);font-weight:600;">Day 1 + Day 2</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 8px;background:var(--card2);border-radius:5px;">
+          <span style="color:var(--text-muted);">Indiana Main Gate</span>
+          <span style="color:var(--text);font-weight:600;">Day 1 + Day 2</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 8px;background:var(--card2);border-radius:5px;">
+          <span style="color:var(--text-muted);">Hilton Gate · Indiana BOH · BOH</span>
+          <span style="color:var(--text);font-weight:600;">Day 1 + Day 2</span>
+        </div>
+      </div>
+      <div style="margin-top:10px;display:flex;align-items:center;gap:8px;font-size:0.67rem;color:var(--text-muted);">
+        <span>🎒 Bags: <strong style="color:var(--text);">15,954</strong></span>
+        <span>· Weapons: <strong style="color:var(--green);">0</strong></span>
+      </div>
+    </div>
+
     <!-- Milan -->
     <div class="card accent-pink">
-      <div class="card-title" style="margin-bottom:12px;"><span><span class="card-title-dot" style="background:var(--pink);box-shadow:0 0 8px var(--pink)"></span>World Tour Milan — 6/11/26</span></div>
+      <div class="card-title" style="margin-bottom:12px;"><span><span class="card-title-dot" style="background:var(--pink);box-shadow:0 0 8px var(--pink)"></span>World Tour Milan — 6/11/26 · Q2</span></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
         <div style="background:var(--card2);border-radius:8px;padding:10px;">
           <div style="font-size:0.6rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.07em;">Screened</div>
@@ -1595,7 +1728,7 @@
 
     <!-- Melbourne -->
     <div class="card accent-orange">
-      <div class="card-title" style="margin-bottom:12px;"><span><span class="card-title-dot" style="background:var(--orange);box-shadow:0 0 8px var(--orange)"></span>World Tour Melbourne — 6/17/26</span></div>
+      <div class="card-title" style="margin-bottom:12px;"><span><span class="card-title-dot" style="background:var(--orange);box-shadow:0 0 8px var(--orange)"></span>World Tour Melbourne — 6/17/26 · Q2</span></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
         <div style="background:var(--card2);border-radius:8px;padding:10px;">
           <div style="font-size:0.6rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.07em;">Screened</div>
@@ -3327,11 +3460,15 @@
     ══════════════════════════════════════════ */
     const ALL_SCREENING = [
       // Q1: Feb–Apr
-      { label: 'WT NYC\n4/29/26',       q: 'Q1', screened: 19365, alerts: 3506, alertRate: 18, color: 'rgba(27,150,255,0.75)',  border: '#1B96FF' },
+      { label: 'CKO\n2/9–12/26',        q: 'Q1', screened: 90185, alerts: 10869, alertRate: 12, color: 'rgba(245,158,11,0.75)',  border: '#f59e0b' },
+      { label: 'WT NYC\n4/29/26',        q: 'Q1', screened: 19365, alerts: 3506,  alertRate: 18, color: 'rgba(27,150,255,0.75)',  border: '#1B96FF' },
+      { label: 'TDX\n4/14–16/26',        q: 'Q1', screened: 31592, alerts: 6632,  alertRate: 21, color: 'rgba(239,68,68,0.75)',   border: '#ef4444' },
       // Q2: May–Jul
-      { label: 'WT Toronto\n5/7/26',    q: 'Q2', screened: 7517,  alerts: 395,  alertRate: 6,  color: 'rgba(20,184,166,0.75)', border: '#14b8a6' },
-      { label: 'WT Milan\n6/11/26',     q: 'Q2', screened: 6234,  alerts: 613,  alertRate: 10, color: 'rgba(236,72,153,0.75)', border: '#ec4899' },
-      { label: 'WT Melbourne\n6/17/26', q: 'Q2', screened: 12558, alerts: 1354, alertRate: 11, color: 'rgba(16,185,129,0.75)', border: '#10b981' },
+      { label: 'Tableau\n5/5–7/26',      q: 'Q2', screened: 27514, alerts: 4434,  alertRate: 16, color: 'rgba(249,115,22,0.75)', border: '#f97316' },
+      { label: 'WT Toronto\n5/7/26',     q: 'Q2', screened: 7517,  alerts: 395,   alertRate: 6,  color: 'rgba(20,184,166,0.75)', border: '#14b8a6' },
+      { label: 'Connections\n6/3–4/26',  q: 'Q2', screened: 28511, alerts: 3663,  alertRate: 13, color: 'rgba(139,92,246,0.75)', border: '#8b5cf6' },
+      { label: 'WT Milan\n6/11/26',      q: 'Q2', screened: 6234,  alerts: 613,   alertRate: 10, color: 'rgba(236,72,153,0.75)', border: '#ec4899' },
+      { label: 'WT Melbourne\n6/17/26',  q: 'Q2', screened: 12558, alerts: 1354,  alertRate: 11, color: 'rgba(16,185,129,0.75)', border: '#10b981' },
     ];
 
     function rebuildScreening(q) {
@@ -3362,6 +3499,21 @@
       } else {
         if (kpi5Ctr) kpi5Ctr.textContent = '—';
       }
+
+      // ── Aggregate KPI section cards ──
+      const BAG_TOTALS = {
+        'CKO\n2/9–12/26': 2185, 'WT NYC\n4/29/26': 3634,
+        'Tableau\n5/5–7/26': 8114, 'WT Toronto\n5/7/26': 2957,
+        'Connections\n6/3–4/26': 15954
+      };
+      const totalBags = data.reduce((s, d) => s + (BAG_TOTALS[d.label] || 0), 0);
+      const el2 = id => document.getElementById(id);
+      if (el2('scrTotal'))    el2('scrTotal').textContent    = totalScreened > 0 ? totalScreened.toLocaleString() : '—';
+      if (el2('scrSubtitle')) el2('scrSubtitle').textContent = totalScreened > 0 ? 'visitors across ' + events + ' event' + (events === 1 ? '' : 's') : 'no data this quarter';
+      if (el2('scrAlerts'))   el2('scrAlerts').textContent   = totalAlerts > 0 ? totalAlerts.toLocaleString() : '—';
+      if (el2('scrRate'))     el2('scrRate').textContent     = totalScreened > 0 ? avgRate + '%' : '—';
+      if (el2('scrBags'))     el2('scrBags').textContent     = totalBags > 0 ? totalBags.toLocaleString() : '—';
+      if (el2('scrBagsNote')) el2('scrBagsNote').textContent = totalBags > 0 ? 'bag screenings · no weapons found' : 'no bag data this quarter';
 
       // ── Volume chart ──
       destroyChart('screeningVolumeChart');
