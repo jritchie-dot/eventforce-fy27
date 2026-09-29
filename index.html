@@ -83,6 +83,9 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      overflow: visible;
+      z-index: 100;
+      position: relative;
     }
     .topbar-logo {
       font-size: 0.8rem;
@@ -93,6 +96,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      white-space: nowrap;
     }
     .topbar-logo-dot {
       width: 7px; height: 7px;
@@ -102,7 +106,8 @@
       animation: pulse 2.5s ease-in-out infinite;
     }
     @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.75)} }
-    .topbar-meta { font-size: 0.68rem; color: var(--text-dim); letter-spacing: 0.06em; }
+    .topbar-meta { font-size: 0.68rem; color: var(--text-dim); letter-spacing: 0.06em; white-space: nowrap; }
+    @media (max-width:600px) { .topbar-meta { display: none; } }
 
     /* ── Page wrapper ── */
     .page { padding: 16px 20px 40px; }
@@ -200,7 +205,10 @@
       gap: 10px;
       margin-bottom: 12px;
     }
-    @media (max-width:900px) { .kpi-row { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width:1100px) { .kpi-row { grid-template-columns: repeat(3,1fr); } }
+    @media (max-width:700px)  { .kpi-row { grid-template-columns: repeat(2,1fr); } }
+    /* Make the last tile span full width when 3-col leaves an orphan */
+    @media (min-width:701px) and (max-width:1100px) { .kpi-row .kpi:last-child { grid-column: 1 / -1; max-width: 420px; margin: 0 auto; width: 100%; } }
 
     .kpi {
       background: var(--card);
@@ -336,8 +344,8 @@
       z-index: 1;
       position: relative;
     }
-    .leaflet-container { background: #e8eef4; }
-    .leaflet-tile { filter: saturate(0.8) brightness(1.02); }
+    .leaflet-container { background: #1a2535; }
+    .leaflet-tile { filter: invert(1) hue-rotate(180deg) saturate(0.7) brightness(0.85); }
     .leaflet-popup-content-wrapper { background: #ffffff !important; border: 1px solid rgba(0,118,211,0.25) !important; box-shadow: 0 4px 20px rgba(0,0,0,0.12) !important; border-radius: 8px !important; }
     .leaflet-popup-tip { background: #ffffff !important; }
     .leaflet-popup-content { margin: 12px 16px !important; }
@@ -1993,10 +2001,9 @@
     /* ── Leaflet Map ── */
     const map = L.map('map', { zoomControl: true, scrollWheelZoom: false }).setView([20, 10], 2);
 
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/">CARTO</a>',
-      maxZoom: 18,
-      subdomains: 'abcd'
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      maxZoom: 19
     }).addTo(map);
 
     // Force re-render after page layout settles
