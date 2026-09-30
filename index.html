@@ -1474,7 +1474,7 @@
     <div class="card accent-green">
       <div class="card-title" style="font-size:0.62rem;border:none;padding-bottom:4px;margin-bottom:0;"><span><span class="card-title-dot" style="background:var(--green);box-shadow:0 0 6px var(--green)"></span>Total Bags Screened</span></div>
       <div id="scrBags" style="font-size:1.6rem;font-weight:700;color:var(--green);line-height:1.1;margin-top:4px;">32,844</div>
-      <div id="scrBagsNote" style="font-size:0.62rem;color:var(--text-dim);margin-top:2px;">CKO + NYC + Tableau + Toronto + Connections · no weapons found</div>
+      <div id="scrBagsNote" style="font-size:0.62rem;color:var(--text-dim);margin-top:2px;">CKO + NYC + Tableau + Toronto + Connections + Dreamforce · 13 weapons found at Dreamforce</div>
     </div>
   </div>
 
@@ -1767,6 +1767,107 @@
       </div>
       <div style="padding:8px 10px;background:var(--card2);border-radius:6px;border-left:2px solid var(--orange);font-size:0.67rem;color:var(--text-dim);">
         Hourly & 5-min interval data available in Ingressotek screening deck
+      </div>
+    </div>
+  </div>
+
+  <!-- Dreamforce Screening Deep Dive -->
+  <div class="card" style="margin-bottom:10px;border-color:rgba(0,161,224,0.4);">
+    <div class="card-title" style="color:var(--purple-bright);"><span><span class="card-title-dot" style="background:var(--purple-bright);box-shadow:0 0 8px var(--purple-bright)"></span>Dreamforce — Screening Operations · Sep 14–17, 2026</span><span style="font-size:0.62rem;color:var(--text-dim);font-weight:400;">Moscone Center · San Francisco · Source: Ingressotek</span></div>
+    <!-- Top KPI row -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px;">
+      <div style="background:var(--card2);border-radius:8px;padding:12px 14px;border:1px solid rgba(0,161,224,0.15);">
+        <div style="font-size:0.58rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em;">Attendees Screened</div>
+        <div style="font-size:1.5rem;font-weight:700;color:var(--purple-bright);line-height:1.1;margin-top:4px;">517,788</div>
+        <div style="font-size:0.6rem;color:var(--text-dim);margin-top:2px;">across 28 locations</div>
+      </div>
+      <div style="background:var(--card2);border-radius:8px;padding:12px 14px;border:1px solid rgba(0,161,224,0.15);">
+        <div style="font-size:0.58rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em;">Bags Screened</div>
+        <div style="font-size:1.5rem;font-weight:700;color:var(--teal);line-height:1.1;margin-top:4px;">104,555</div>
+        <div style="font-size:0.6rem;color:var(--text-dim);margin-top:2px;">0.2 bags per attendee</div>
+      </div>
+      <div style="background:var(--card2);border-radius:8px;padding:12px 14px;border:1px solid rgba(0,161,224,0.15);">
+        <div style="font-size:0.58rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em;">Attendee Alert Rate</div>
+        <div style="font-size:1.5rem;font-weight:700;color:var(--yellow);line-height:1.1;margin-top:4px;">13.3%</div>
+        <div style="font-size:0.6rem;color:var(--text-dim);margin-top:2px;">68,910 flagged</div>
+      </div>
+      <div style="background:var(--card2);border-radius:8px;padding:12px 14px;border:1px solid rgba(239,68,68,0.25);">
+        <div style="font-size:0.58rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em;">Weapons Found</div>
+        <div style="font-size:1.5rem;font-weight:700;color:var(--red);line-height:1.1;margin-top:4px;">13</div>
+        <div style="font-size:0.6rem;color:var(--text-dim);margin-top:2px;">7.7% bag alert rate · 8,039 flagged</div>
+      </div>
+    </div>
+    <!-- Day-by-day + Gate breakdown -->
+    <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:10px;">
+      <!-- Day breakdown -->
+      <div>
+        <div style="font-size:0.62rem;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.09em;margin-bottom:8px;">Daily Throughput</div>
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <div style="display:grid;grid-template-columns:80px 1fr 60px 50px;align-items:center;gap:8px;font-size:0.68rem;">
+            <span style="color:var(--text-muted);">Mon 9/14</span>
+            <div style="background:var(--card3);border-radius:3px;height:8px;overflow:hidden;"><div style="background:var(--purple-bright);height:100%;width:${30130/207927*100}%;border-radius:3px;" style="width:14.5%"></div></div>
+            <span style="color:var(--text);font-weight:600;">30,130</span>
+            <span style="color:var(--text-dim);">10.4% alert</span>
+          </div>
+          <div style="display:grid;grid-template-columns:80px 1fr 60px 50px;align-items:center;gap:8px;font-size:0.68rem;">
+            <span style="color:var(--yellow);font-weight:600;">Tue 9/15 ★</span>
+            <div style="background:var(--card3);border-radius:3px;height:8px;overflow:hidden;"><div style="background:var(--yellow);height:100%;width:100%;border-radius:3px;"></div></div>
+            <span style="color:var(--text);font-weight:600;">207,927</span>
+            <span style="color:var(--text-dim);">14.9% alert</span>
+          </div>
+          <div style="display:grid;grid-template-columns:80px 1fr 60px 50px;align-items:center;gap:8px;font-size:0.68rem;">
+            <span style="color:var(--text-muted);">Wed 9/16</span>
+            <div style="background:var(--card3);border-radius:3px;height:8px;overflow:hidden;"><div style="background:var(--purple-bright);height:100%;width:81%;border-radius:3px;"></div></div>
+            <span style="color:var(--text);font-weight:600;">168,593</span>
+            <span style="color:var(--text-dim);">11.9% alert</span>
+          </div>
+          <div style="display:grid;grid-template-columns:80px 1fr 60px 50px;align-items:center;gap:8px;font-size:0.68rem;">
+            <span style="color:var(--text-muted);">Thu 9/17</span>
+            <div style="background:var(--card3);border-radius:3px;height:8px;overflow:hidden;"><div style="background:var(--purple-bright);height:100%;width:53%;border-radius:3px;"></div></div>
+            <span style="color:var(--text);font-weight:600;">111,138</span>
+            <span style="color:var(--text-dim);">13.2% alert</span>
+          </div>
+        </div>
+        <div style="margin-top:10px;padding:8px 10px;background:var(--card2);border-radius:6px;border-left:3px solid var(--yellow);font-size:0.65rem;color:var(--text-muted);">
+          <strong style="color:var(--yellow);">Peak hour:</strong> 8,828 people/hr at 4th &amp; Howard · Tue Sep 15 · 8 AM PT
+        </div>
+      </div>
+      <!-- Gate breakdown -->
+      <div>
+        <div style="font-size:0.62rem;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.09em;margin-bottom:8px;">Top Gates by Volume</div>
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <div style="display:grid;grid-template-columns:1fr 70px 40px;align-items:center;gap:6px;font-size:0.65rem;">
+            <span style="color:var(--text-muted);">4th &amp; Howard</span>
+            <div style="background:var(--card3);border-radius:3px;height:7px;overflow:hidden;"><div style="background:var(--purple-bright);height:100%;width:100%;border-radius:3px;"></div></div>
+            <span style="color:var(--text);font-weight:600;text-align:right;">151,763</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 70px 40px;align-items:center;gap:6px;font-size:0.65rem;">
+            <span style="color:var(--text-muted);">4th St Moscone West</span>
+            <div style="background:var(--card3);border-radius:3px;height:7px;overflow:hidden;"><div style="background:var(--teal);height:100%;width:67%;border-radius:3px;"></div></div>
+            <span style="color:var(--text);font-weight:600;text-align:right;">102,124</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 70px 40px;align-items:center;gap:6px;font-size:0.65rem;">
+            <span style="color:var(--text-muted);">West and Howard</span>
+            <div style="background:var(--card3);border-radius:3px;height:7px;overflow:hidden;"><div style="background:var(--teal);height:100%;width:39%;border-radius:3px;"></div></div>
+            <span style="color:var(--text);font-weight:600;text-align:right;">58,930</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 70px 40px;align-items:center;gap:6px;font-size:0.65rem;">
+            <span style="color:var(--text-muted);">3rd &amp; Howard</span>
+            <div style="background:var(--card3);border-radius:3px;height:7px;overflow:hidden;"><div style="background:var(--teal);height:100%;width:38%;border-radius:3px;"></div></div>
+            <span style="color:var(--text);font-weight:600;text-align:right;">57,614</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 70px 40px;align-items:center;gap:6px;font-size:0.65rem;">
+            <span style="color:var(--text-muted);">YBT Breezeway</span>
+            <div style="background:var(--card3);border-radius:3px;height:7px;overflow:hidden;"><div style="background:var(--teal);height:100%;width:29%;border-radius:3px;"></div></div>
+            <span style="color:var(--text);font-weight:600;text-align:right;">43,276</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 70px 40px;align-items:center;gap:6px;font-size:0.65rem;">
+            <span style="color:var(--text-muted);">Metreon Main Entry</span>
+            <div style="background:var(--card3);border-radius:3px;height:7px;overflow:hidden;"><div style="background:var(--teal);height:100%;width:20%;border-radius:3px;"></div></div>
+            <span style="color:var(--text);font-weight:600;text-align:right;">30,565</span>
+          </div>
+        </div>
+        <div style="margin-top:8px;font-size:0.62rem;color:var(--text-dim);">29% of all traffic through 4th &amp; Howard · 60% through top 3 gates</div>
       </div>
     </div>
   </div>
@@ -3534,6 +3635,8 @@
       { label: 'Connections\n6/3–4/26',  q: 'Q2', screened: 28511, alerts: 3663,  alertRate: 13, color: 'rgba(139,92,246,0.75)', border: '#8b5cf6' },
       { label: 'WT Milan\n6/11/26',      q: 'Q2', screened: 6234,  alerts: 613,   alertRate: 10, color: 'rgba(236,72,153,0.75)', border: '#ec4899' },
       { label: 'WT Melbourne\n6/17/26',  q: 'Q2', screened: 12558, alerts: 1354,  alertRate: 11, color: 'rgba(16,185,129,0.75)', border: '#10b981' },
+      // Q3: Aug–Oct
+      { label: 'Dreamforce\n9/14–17/26', q: 'Q3', screened: 517788, alerts: 68910, alertRate: 13, color: 'rgba(0,161,224,0.75)', border: '#00A1E0' },
     ];
 
     function rebuildScreening(q) {
