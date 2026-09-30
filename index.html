@@ -37,17 +37,17 @@
       --red:         #ef4444;
 
       /* Backgrounds */
-      --bg:     #f8f9fb;   /* page bg — off-white */
-      --card:   #ffffff;   /* card bg */
-      --card2:  #f0f4f8;   /* slightly darker card */
-      --card3:  #e5edf5;   /* hover / thead */
-      --border: rgba(0,118,211,0.15);
-      --border-bright: rgba(0,118,211,0.45);
+      --bg:     #0a0914;   /* page bg — near-black */
+      --card:   #0f0e1f;   /* card bg */
+      --card2:  #161528;   /* slightly lighter card */
+      --card3:  #1e1d35;   /* hover / thead */
+      --border: rgba(27,150,255,0.15);
+      --border-bright: rgba(27,150,255,0.45);
 
       /* Text */
-      --text:       #0e1b2e;
-      --text-muted: #4a6480;
-      --text-dim:   #9ab0c4;
+      --text:       #e2eaf4;
+      --text-muted: #8faabe;
+      --text-dim:   #4a6480;
 
       /* Legacy aliases so existing JS color vars still work */
       --blue:        #0176D3;
@@ -58,10 +58,10 @@
       --cyan:        #14b8a6;
       --cyan-dim:    rgba(20,184,166,0.12);
       --amber:       #f59e0b;
-      --navy:        #f8f9fb;
-      --navy2:       #ffffff;
-      --navy3:       #f0f4f8;
-      --navy4:       #e5edf5;
+      --navy:        #0a0914;
+      --navy2:       #0f0e1f;
+      --navy3:       #161528;
+      --navy4:       #1e1d35;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -76,7 +76,7 @@
 
     /* ── Top nav ── */
     .topbar {
-      background: #ffffff;
+      background: #0f0e1f;
       border-bottom: 1px solid var(--border);
       padding: 0 24px;
       height: 48px;
@@ -610,7 +610,7 @@
       box-shadow: 0 10px 36px rgba(0,0,0,0.65), 0 0 0 1px rgba(27,150,255,0.08);
       font-family: 'Inter', sans-serif;
       font-size: 0.72rem;
-      color: #0e1b2e;
+      color: #e2eaf4;
     }
     .ctt-title {
       font-size: 0.68rem;
@@ -667,7 +667,7 @@
       flex-shrink: 0;
     }
     .ctt-event-dot  { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-    .ctt-event-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #0e1b2e; }
+    .ctt-event-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #e2eaf4; }
     .ctt-event-val  { font-weight: 700; flex-shrink: 0; font-size: 0.65rem; }
     .ctt-divider    { border: none; border-top: 1px solid rgba(0,161,224,0.15); margin: 7px 0; }
     .ctt-more       { display: none; } /* replaced by scroll */
@@ -1837,7 +1837,7 @@
 
   <script>
     /* ── Chart defaults ── */
-    Chart.defaults.color = '#4a6480';
+    Chart.defaults.color = '#8faabe';
     Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
     Chart.defaults.font.size = 11;
 
@@ -1849,7 +1849,7 @@
     const purple    = '#1B96FF';
     const purpleDim = 'rgba(27,150,255,0.18)';
     const grid      = 'rgba(0,0,0,0.08)';
-    const tick      = '#4a6480';
+    const tick      = '#8faabe';
 
     const baseScales = {
       x: { grid: { color: grid }, ticks: { color: tick } },
@@ -2517,7 +2517,7 @@
     legend.onAdd = () => {
       const wrap = L.DomUtil.create('div');
       Object.assign(wrap.style, {
-        background:'#ffffff', color:'#0e1b2e', padding:'12px 14px', borderRadius:'8px', border:'1px solid rgba(0,118,211,0.18)',
+        background:'#0f0e1f', color:'#e2eaf4', padding:'12px 14px', borderRadius:'8px', border:'1px solid rgba(0,118,211,0.18)',
         fontFamily:'Inter,sans-serif', fontSize:'11px', border:'1px solid rgba(0,161,224,0.3)',
         boxShadow:'0 4px 16px rgba(0,0,0,0.6)', lineHeight:'1.6', maxWidth:'170px'
       });
@@ -2699,12 +2699,12 @@
         ? `<span class="ctt-title-dot" style="background:${titleColor};box-shadow:0 0 5px ${titleColor}88;"></span>`
         : '';
       let html = `<div class="ctt-title">${dot}${escHtml(title)}</div>`;
-      if (primary) html += `<div class="ctt-primary" style="color:${primaryColor||'#0e1b2e'}">${escHtml(primary)}</div>`;
+      if (primary) html += `<div class="ctt-primary" style="color:${primaryColor||'#e2eaf4'}">${escHtml(primary)}</div>`;
       if (rows && rows.length) {
         html += rows.map(([label, val, vc]) =>
           `<div class="ctt-row">
             <span class="ctt-row-label">${escHtml(String(label))}</span>
-            <span class="ctt-row-val" style="color:${vc||'#0e1b2e'}">${escHtml(String(val))}</span>
+            <span class="ctt-row-val" style="color:${vc||'#e2eaf4'}">${escHtml(String(val))}</span>
           </div>`
         ).join('');
       }
@@ -3126,7 +3126,7 @@
               primaryColor: '#1B96FF',
               rows: [
                 ['Events w/ ETOP', oEvts.length, '#6ba4be'],
-                ['Top event',      topEvt ? topEvt.name.replace(/ FY27$/,'') : '—', '#0e1b2e'],
+                ['Top event',      topEvt ? topEvt.name.replace(/ FY27$/,'') : '—', '#e2eaf4'],
                 ['Avg per event',  oEvts.length ? '$'+(total/oEvts.length/1e6).toFixed(1)+'M' : '—', '#6ba4be'],
               ],
               events: oEvts.sort((a,b)=>b.etop-a.etop),
@@ -3158,7 +3158,7 @@
               primary: '$'+(e.etop/1e6).toFixed(1)+'M ETOP',
               primaryColor: '#f59e0b',
               rows: [
-                ['Owner',      e.owner, '#0e1b2e'],
+                ['Owner',      e.owner, '#e2eaf4'],
                 ['Status',     e.status||'—', sc],
                 ['Date',       e.date, '#6ba4be'],
                 ['Attendance', e.attendance ? e.attendance.toLocaleString() : '—', '#6ba4be'],
@@ -3473,8 +3473,8 @@
               }
             },
             scales: {
-              x: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.07)' }, ticks: { color: '#4a6480' } },
-              y: { grid: { display: false }, ticks: { color: '#4a6480', font: { size: 10 } } }
+              x: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.07)' }, ticks: { color: '#8faabe' } },
+              y: { grid: { display: false }, ticks: { color: '#8faabe', font: { size: 10 } } }
             }
           }
         });
@@ -3512,8 +3512,8 @@
               }
             },
             scales: {
-              x: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.07)' }, ticks: { color: '#4a6480', callback: v => '$' + (v/1000).toFixed(0) + 'k' } },
-              y: { grid: { display: false }, ticks: { color: '#4a6480', font: { size: 10 } } }
+              x: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.07)' }, ticks: { color: '#8faabe', callback: v => '$' + (v/1000).toFixed(0) + 'k' } },
+              y: { grid: { display: false }, ticks: { color: '#8faabe', font: { size: 10 } } }
             }
           }
         });
@@ -3596,8 +3596,8 @@
             responsive: true, maintainAspectRatio: true,
             plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => c.parsed.y.toLocaleString() + ' screened' } } },
             scales: {
-              x: { grid: { display: false }, ticks: { color: '#4a6480', font: { size: 10 } } },
-              y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.07)' }, ticks: { color: '#4a6480', callback: v => (v/1000).toFixed(0) + 'k' } }
+              x: { grid: { display: false }, ticks: { color: '#8faabe', font: { size: 10 } } },
+              y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.07)' }, ticks: { color: '#8faabe', callback: v => (v/1000).toFixed(0) + 'k' } }
             }
           }
         });
@@ -3626,8 +3626,8 @@
             responsive: true, maintainAspectRatio: true,
             plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => c.parsed.y + '% alert rate' } } },
             scales: {
-              x: { grid: { display: false }, ticks: { color: '#4a6480', font: { size: 10 } } },
-              y: { beginAtZero: true, max: 25, grid: { color: 'rgba(0,0,0,0.07)' }, ticks: { color: '#4a6480', callback: v => v + '%' } }
+              x: { grid: { display: false }, ticks: { color: '#8faabe', font: { size: 10 } } },
+              y: { beginAtZero: true, max: 25, grid: { color: 'rgba(255,255,255,0.07)' }, ticks: { color: '#8faabe', callback: v => v + '%' } }
             }
           }
         });
@@ -3685,7 +3685,7 @@
       await new Promise(r => setTimeout(r, 80)); // let overlay render
       try {
         const canvas = await html2canvas(document.getElementById('root') || document.body, {
-          backgroundColor: '#f8f9fb',
+          backgroundColor: '#0a0914',
           scale: 2,               // 2× for retina-quality
           useCORS: true,
           allowTaint: true,
@@ -3711,7 +3711,7 @@
       await new Promise(r => setTimeout(r, 80));
       try {
         const canvas = await html2canvas(document.getElementById('root') || document.body, {
-          backgroundColor: '#f8f9fb',
+          backgroundColor: '#0a0914',
           scale: 1.5,
           useCORS: true,
           allowTaint: true,
@@ -3728,7 +3728,7 @@
 <title>Eventforce Dashboard FY2027</title>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
-  body { background:#f8f9fb; }
+  body { background:#0a0914; }
   img { width:100%; display:block; }
   @page { size: auto; margin: 0; }
   @media print { body { -webkit-print-color-adjust:exact; print-color-adjust:exact; } }
