@@ -53,6 +53,8 @@ function createEventGlobe({ events, map, getOwnerColor, openEvent }) {
         const pin = document.createElement('button');
         pin.type = 'button';
         pin.className = 'map-avatar-pin' + (event.attendees === null ? ' upcoming' : '');
+        // The globe's HTML overlay disables pointer events by default.
+        pin.style.pointerEvents = 'auto';
         pin.style.background = getOwnerColor(event.owner === '—' ? '__unassigned__' : event.owner);
         pin.style.opacity = event.attendees === null ? '0.7' : '1';
         pin.textContent = event.owner && event.owner !== '—'
